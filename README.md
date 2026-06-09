@@ -2,10 +2,18 @@
 <div align="center">
 
 ```
-◇─────────────────────────────────────────◇
-        P L A T I N U M A I
-        THE PROMPTING BIBLE
-◇─────────────────────────────────────────◇
+ ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
+                    ◈
+          ╔═══════════════════╗
+          ║  P L A T I N U M  ║
+          ║    A  ·  I        ║
+          ╚═══════════════════╝
+                    ◈
+          ━━━━━━━━━━━━━━━━━━━━━━━
+           T H E   P R O M P T I N G
+                 B I B L E
+          ━━━━━━━━━━━━━━━━━━━━━━━
+ ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
 ```
 
 **World-class image direction for GPT-Image-2.**  
@@ -119,10 +127,11 @@ git push -u origin main
 <div align="center">
 
 ```
-◇──────────────────────────────◇
-  Built by  P L A T I N U M A I
-  Wyoming · You Always Win
-◇──────────────────────────────◇
+   ◈  ━━━━━━━━━━━━━━━━━━━━━━━━━━  ◈
+        Built by  P L A T I N U M A I
+             Wyoming  ·  2026
+           " You  Always  Win "
+   ◈  ━━━━━━━━━━━━━━━━━━━━━━━━━━  ◈
 ```
 
 </div>
