@@ -1,57 +1,137 @@
 
 <div align="center">
 
-<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+<svg width="800" height="220" viewBox="0 0 800 220" xmlns="http://www.w3.org/2000/svg">
   <defs>
-    <linearGradient id="vg" x1="0%" y1="0%" x2="100%" y2="0%">
-      <stop offset="0%"   stop-color="#5B54A8"/>
-      <stop offset="50%"  stop-color="#9D97DC"/>
-      <stop offset="100%" stop-color="#5B54A8"/>
+    <!-- violet title gradient -->
+    <linearGradient id="titleGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#4A43A0"/>
+      <stop offset="30%"  stop-color="#9D97DC"/>
+      <stop offset="50%"  stop-color="#C8C4F0"/>
+      <stop offset="70%"  stop-color="#9D97DC"/>
+      <stop offset="100%" stop-color="#4A43A0"/>
     </linearGradient>
-    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%"   stop-color="#13141A"/>
+    <!-- border gradient -->
+    <linearGradient id="borderGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#1E1F26"/>
+      <stop offset="30%"  stop-color="#7B73C8"/>
+      <stop offset="50%"  stop-color="#9D97DC"/>
+      <stop offset="70%"  stop-color="#7B73C8"/>
+      <stop offset="100%" stop-color="#1E1F26"/>
+    </linearGradient>
+    <!-- background -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#161720"/>
       <stop offset="100%" stop-color="#0D0E12"/>
     </linearGradient>
-    <filter id="glow">
-      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+    <!-- soft glow on title -->
+    <filter id="softGlow" x="-20%" y="-40%" width="140%" height="180%">
+      <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"/>
+      <feColorMatrix in="blur" type="matrix"
+        values="0 0 0 0 0.48
+                0 0 0 0 0.45
+                0 0 0 0 0.80
+                0 0 0 0.7 0" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+    <!-- subtle glow on diamonds -->
+    <filter id="dimGlow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
       <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
     </filter>
   </defs>
 
-  <!-- background -->
-  <rect width="640" height="160" rx="14" fill="url(#bg)"/>
+  <!-- main background -->
+  <rect width="800" height="220" rx="16" fill="url(#bgGrad)"/>
 
-  <!-- corner diamonds -->
-  <polygon points="18,12 24,18 18,24 12,18" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
-  <polygon points="622,12 628,18 622,24 616,18" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
-  <polygon points="18,136 24,142 18,148 12,142" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
-  <polygon points="622,136 628,142 622,148 616,142" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
+  <!-- outer border -->
+  <rect x="1" y="1" width="798" height="218" rx="15.5" fill="none"
+        stroke="url(#borderGrad)" stroke-width="1.2"/>
 
-  <!-- top & bottom rules -->
-  <line x1="36" y1="18" x2="604" y2="18" stroke="#2E3038" stroke-width="0.8"/>
-  <line x1="36" y1="142" x2="604" y2="142" stroke="#2E3038" stroke-width="0.8"/>
+  <!-- inner border offset -->
+  <rect x="10" y="10" width="780" height="200" rx="10" fill="none"
+        stroke="#2A2B35" stroke-width="0.6"/>
 
-  <!-- center diamond -->
-  <polygon points="320,22 327,29 320,36 313,29" fill="#7B73C8" fill-opacity="0.25" stroke="#7B73C8" stroke-width="1"/>
+  <!-- top center rule with gap for diamond -->
+  <line x1="30" y1="28" x2="370" y2="28" stroke="url(#borderGrad)" stroke-width="0.8"/>
+  <line x1="430" y1="28" x2="770" y2="28" stroke="url(#borderGrad)" stroke-width="0.8"/>
 
-  <!-- main title -->
-  <text x="320" y="90"
+  <!-- bottom center rule with gap for diamond -->
+  <line x1="30" y1="192" x2="370" y2="192" stroke="url(#borderGrad)" stroke-width="0.8"/>
+  <line x1="430" y1="192" x2="770" y2="192" stroke="url(#borderGrad)" stroke-width="0.8"/>
+
+  <!-- top center diamond -->
+  <polygon points="400,18 410,28 400,38 390,28"
+           fill="#7B73C8" fill-opacity="0.2"
+           stroke="#9D97DC" stroke-width="1.2"
+           filter="url(#dimGlow)"/>
+  <polygon points="400,22 407,28 400,34 393,28"
+           fill="#7B73C8" fill-opacity="0.4" stroke="none"/>
+
+  <!-- bottom center diamond -->
+  <polygon points="400,182 410,192 400,202 390,192"
+           fill="#7B73C8" fill-opacity="0.2"
+           stroke="#9D97DC" stroke-width="1.2"
+           filter="url(#dimGlow)"/>
+  <polygon points="400,186 407,192 400,198 393,192"
+           fill="#7B73C8" fill-opacity="0.4" stroke="none"/>
+
+  <!-- corner accent lines TL -->
+  <line x1="16" y1="40" x2="16" y2="65" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <line x1="16" y1="40" x2="42" y2="40" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <!-- corner accent lines TR -->
+  <line x1="784" y1="40" x2="784" y2="65" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <line x1="758" y1="40" x2="784" y2="40" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <!-- corner accent lines BL -->
+  <line x1="16" y1="180" x2="16" y2="155" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <line x1="16" y1="180" x2="42" y2="180" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <!-- corner accent lines BR -->
+  <line x1="784" y1="180" x2="784" y2="155" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+  <line x1="758" y1="180" x2="784" y2="180" stroke="#7B73C8" stroke-width="0.8" opacity="0.6"/>
+
+  <!-- decorative side dots -->
+  <circle cx="30" cy="110" r="1.5" fill="#7B73C8" opacity="0.5"/>
+  <circle cx="770" cy="110" r="1.5" fill="#7B73C8" opacity="0.5"/>
+  <circle cx="22" cy="110" r="1" fill="#7B73C8" opacity="0.3"/>
+  <circle cx="778" cy="110" r="1" fill="#7B73C8" opacity="0.3"/>
+
+  <!-- eyebrow label -->
+  <text x="400" y="62"
         font-family="'Courier New', monospace"
-        font-size="38"
-        font-weight="700"
-        letter-spacing="14"
+        font-size="9"
+        letter-spacing="6"
         text-anchor="middle"
-        fill="url(#vg)"
-        filter="url(#glow)">PLATINUMAI</text>
+        fill="#4A4870"
+        font-weight="400">◆  PLATINUM AI TECH GROUP  ◆</text>
+
+  <!-- main PLATINUMAI title -->
+  <text x="400" y="130"
+        font-family="Georgia, 'Times New Roman', serif"
+        font-size="52"
+        font-weight="700"
+        letter-spacing="16"
+        text-anchor="middle"
+        fill="url(#titleGrad)"
+        filter="url(#softGlow)">PLATINUMAI</text>
+
+  <!-- divider line between title and subtitle -->
+  <line x1="160" y1="150" x2="640" y2="150" stroke="#2E3038" stroke-width="0.8"/>
+  <circle cx="160" cy="150" r="2" fill="#7B73C8" opacity="0.6"/>
+  <circle cx="640" cy="150" r="2" fill="#7B73C8" opacity="0.6"/>
+  <circle cx="400" cy="150" r="2.5" fill="#9D97DC" opacity="0.8"/>
 
   <!-- subtitle -->
-  <text x="320" y="122"
+  <text x="400" y="177"
         font-family="'Courier New', monospace"
         font-size="11"
-        font-weight="400"
-        letter-spacing="8"
+        letter-spacing="9"
         text-anchor="middle"
-        fill="#8890A2">✦  THE PROMPTING BIBLE  ✦</text>
+        fill="#6B6590"
+        font-weight="400">✦   THE  PROMPTING  BIBLE   ✦</text>
 </svg>
 
 **World-class image direction for GPT-Image-2.**  
