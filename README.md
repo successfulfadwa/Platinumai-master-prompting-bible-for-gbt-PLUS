@@ -1,20 +1,58 @@
 
 <div align="center">
 
-```
- ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
-                    ◈
-          ╔═══════════════════╗
-          ║  P L A T I N U M  ║
-          ║    A  ·  I        ║
-          ╚═══════════════════╝
-                    ◈
-          ━━━━━━━━━━━━━━━━━━━━━━━
-           T H E   P R O M P T I N G
-                 B I B L E
-          ━━━━━━━━━━━━━━━━━━━━━━━
- ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·  ·
-```
+<svg width="640" height="160" viewBox="0 0 640 160" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="vg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%"   stop-color="#5B54A8"/>
+      <stop offset="50%"  stop-color="#9D97DC"/>
+      <stop offset="100%" stop-color="#5B54A8"/>
+    </linearGradient>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%"   stop-color="#13141A"/>
+      <stop offset="100%" stop-color="#0D0E12"/>
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="3.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- background -->
+  <rect width="640" height="160" rx="14" fill="url(#bg)"/>
+
+  <!-- corner diamonds -->
+  <polygon points="18,12 24,18 18,24 12,18" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
+  <polygon points="622,12 628,18 622,24 616,18" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
+  <polygon points="18,136 24,142 18,148 12,142" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
+  <polygon points="622,136 628,142 622,148 616,142" fill="none" stroke="#7B73C8" stroke-width="1.2"/>
+
+  <!-- top & bottom rules -->
+  <line x1="36" y1="18" x2="604" y2="18" stroke="#2E3038" stroke-width="0.8"/>
+  <line x1="36" y1="142" x2="604" y2="142" stroke="#2E3038" stroke-width="0.8"/>
+
+  <!-- center diamond -->
+  <polygon points="320,22 327,29 320,36 313,29" fill="#7B73C8" fill-opacity="0.25" stroke="#7B73C8" stroke-width="1"/>
+
+  <!-- main title -->
+  <text x="320" y="90"
+        font-family="'Courier New', monospace"
+        font-size="38"
+        font-weight="700"
+        letter-spacing="14"
+        text-anchor="middle"
+        fill="url(#vg)"
+        filter="url(#glow)">PLATINUMAI</text>
+
+  <!-- subtitle -->
+  <text x="320" y="122"
+        font-family="'Courier New', monospace"
+        font-size="11"
+        font-weight="400"
+        letter-spacing="8"
+        text-anchor="middle"
+        fill="#8890A2">✦  THE PROMPTING BIBLE  ✦</text>
+</svg>
 
 **World-class image direction for GPT-Image-2.**  
 Nineteen sections built from real production prompting — not beginner tutorials.  
