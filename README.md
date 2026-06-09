@@ -121,7 +121,7 @@ git push -u origin main
 ```
 ◇──────────────────────────────◇
   Built by  P L A T I N U M A I
-  DFW Texas · You Always Win
+  Wyoming · You Always Win
 ◇──────────────────────────────◇
 ```
 
