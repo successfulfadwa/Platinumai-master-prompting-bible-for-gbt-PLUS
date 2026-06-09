@@ -1,0 +1,3606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PlatinumAI · The Master Prompting Bible</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --void: #0D0E12;
+  --onyx: #191A1F;
+  --carbon: #25272E;
+  --steel: #3A3D47;
+  --steel-soft: #2E3038;
+  --mercury: #8890A2;
+  --platinum: #B8BDC8;
+  --stellar: #F4F5F8;
+  --violet: #7B73C8;
+  --violet-glow: rgba(123, 115, 200, 0.15);
+  --violet-line: rgba(123, 115, 200, 0.4);
+
+  --sb-w: 300px;
+  --content-max: 820px;
+
+  --font-display: 'Space Grotesk', -apple-system, system-ui, sans-serif;
+  --font-body: 'Inter', -apple-system, system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', 'SF Mono', Consolas, monospace;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--void);
+  color: var(--platinum);
+  font-family: var(--font-body);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+/* ====== APP LAYOUT ====== */
+.app {
+  display: grid;
+  grid-template-columns: var(--sb-w) 1fr;
+  min-height: 100vh;
+}
+
+/* ====== SIDEBAR ====== */
+.sidebar {
+  position: fixed;
+  top: 0; left: 0; bottom: 0;
+  width: var(--sb-w);
+  background: var(--void);
+  border-right: 1px solid var(--steel-soft);
+  display: flex;
+  flex-direction: column;
+  z-index: 100;
+}
+
+.sb-brand {
+  padding: 28px 24px 20px;
+  border-bottom: 1px solid var(--steel-soft);
+}
+
+.sb-logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.sb-diamond {
+  width: 22px;
+  height: 22px;
+  flex-shrink: 0;
+}
+
+.sb-brand-name {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 15px;
+  letter-spacing: 0.04em;
+  color: var(--stellar);
+}
+
+.sb-tagline {
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  letter-spacing: 0.18em;
+  color: var(--mercury);
+  text-transform: uppercase;
+  margin-left: 34px;
+}
+
+.sb-search {
+  padding: 16px 20px 12px;
+  border-bottom: 1px solid var(--steel-soft);
+}
+
+.sb-search input {
+  width: 100%;
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-radius: 6px;
+  padding: 9px 12px 9px 32px;
+  color: var(--stellar);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' viewBox='0 0 24 24' fill='none' stroke='%238890A2' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='M21 21l-4.35-4.35'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: 11px center;
+}
+
+.sb-search input:focus {
+  border-color: var(--violet-line);
+  box-shadow: 0 0 0 3px var(--violet-glow);
+}
+
+.sb-search input::placeholder { color: var(--mercury); }
+
+.sb-search-hint {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--mercury);
+  margin-top: 8px;
+  letter-spacing: 0.05em;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.kbd {
+  background: var(--carbon);
+  border: 1px solid var(--steel-soft);
+  border-radius: 3px;
+  padding: 2px 6px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--platinum);
+}
+
+.sb-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px 0 28px;
+}
+
+.sb-nav::-webkit-scrollbar { width: 6px; }
+.sb-nav::-webkit-scrollbar-track { background: transparent; }
+.sb-nav::-webkit-scrollbar-thumb { background: var(--steel); border-radius: 3px; }
+
+.sb-section-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--mercury);
+  text-transform: uppercase;
+  padding: 14px 24px 8px;
+  font-weight: 500;
+}
+
+.sb-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 24px;
+  color: var(--platinum);
+  text-decoration: none;
+  font-size: 13px;
+  font-weight: 400;
+  transition: all 0.15s;
+  border-left: 2px solid transparent;
+  margin-left: -1px;
+}
+
+.sb-link:hover {
+  color: var(--stellar);
+  background: var(--onyx);
+  border-left-color: var(--steel);
+}
+
+.sb-link.active {
+  color: var(--stellar);
+  background: linear-gradient(to right, var(--violet-glow), transparent);
+  border-left-color: var(--violet);
+}
+
+.sb-num {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--mercury);
+  min-width: 22px;
+  font-weight: 500;
+}
+
+.sb-link.active .sb-num { color: var(--violet); }
+
+.sb-link.hidden { display: none; }
+
+.sb-footer {
+  padding: 14px 24px;
+  border-top: 1px solid var(--steel-soft);
+  font-family: var(--font-display);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  color: var(--mercury);
+  text-transform: uppercase;
+  text-align: center;
+}
+
+/* ====== MAIN CONTENT ====== */
+.main {
+  grid-column: 2;
+  min-height: 100vh;
+  position: relative;
+}
+
+.content {
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: 80px 64px 120px;
+}
+
+/* Scroll progress bar */
+.progress-bar {
+  position: fixed;
+  top: 0; left: var(--sb-w);
+  right: 0;
+  height: 2px;
+  background: var(--violet);
+  z-index: 50;
+  width: 0%;
+  transition: width 0.05s;
+}
+
+/* ====== HERO ====== */
+.hero {
+  min-height: calc(100vh - 80px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+  padding: 0;
+  margin: 0;
+}
+
+.hero-eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.3em;
+  color: var(--mercury);
+  text-transform: uppercase;
+  margin-bottom: 36px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.hero-eyebrow::before {
+  content: '';
+  width: 28px;
+  height: 1px;
+  background: var(--violet);
+}
+
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(48px, 8vw, 96px);
+  font-weight: 700;
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--stellar);
+  margin-bottom: 24px;
+}
+
+.hero-title .accent {
+  display: block;
+  color: var(--platinum);
+  font-weight: 300;
+  font-style: italic;
+}
+
+.hero-sub {
+  font-size: 18px;
+  color: var(--mercury);
+  max-width: 540px;
+  margin-bottom: 56px;
+  line-height: 1.55;
+}
+
+.hero-meta {
+  display: flex;
+  gap: 48px;
+  flex-wrap: wrap;
+  padding-top: 36px;
+  border-top: 1px solid var(--steel-soft);
+}
+
+.hero-meta-item {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.hero-meta-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--mercury);
+  text-transform: uppercase;
+}
+
+.hero-meta-value {
+  font-family: var(--font-display);
+  font-size: 14px;
+  color: var(--stellar);
+  font-weight: 500;
+}
+
+/* Geometric watermark */
+.hero-watermark {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 480px;
+  height: 480px;
+  opacity: 0.04;
+  pointer-events: none;
+}
+
+/* ====== SECTIONS ====== */
+.section {
+  margin-top: 120px;
+  scroll-margin-top: 40px;
+  position: relative;
+}
+
+.section-header {
+  margin-bottom: 40px;
+  padding-bottom: 28px;
+  border-bottom: 1px solid var(--steel-soft);
+  display: flex;
+  align-items: baseline;
+  gap: 28px;
+  position: relative;
+}
+
+.section-num {
+  font-family: var(--font-display);
+  font-size: 64px;
+  font-weight: 300;
+  color: var(--violet);
+  line-height: 1;
+  letter-spacing: -0.04em;
+  flex-shrink: 0;
+}
+
+.section-title-wrap { flex: 1; }
+
+.section-eyebrow {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  color: var(--mercury);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 600;
+  color: var(--stellar);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+}
+
+/* ====== CALLOUTS ====== */
+.callout {
+  background: linear-gradient(180deg, var(--carbon), var(--onyx));
+  border: 1px solid var(--steel-soft);
+  border-left: 3px solid var(--violet);
+  border-radius: 8px;
+  padding: 22px 26px;
+  margin: 24px 0;
+  position: relative;
+}
+
+.callout-tldr { border-left-color: var(--violet); }
+.callout-trick { border-left-color: #C9A961; }
+.callout-warn { border-left-color: #C25450; }
+.callout-tip { border-left-color: #5A8B6B; }
+
+.callout-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.callout-tldr .callout-label { color: var(--violet); }
+.callout-trick .callout-label { color: #C9A961; }
+.callout-warn .callout-label { color: #C25450; }
+.callout-tip .callout-label { color: #5A8B6B; }
+
+.callout-body {
+  color: var(--platinum);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+
+.callout-body strong { color: var(--stellar); font-weight: 600; }
+.callout-body em { color: var(--mercury); font-style: italic; }
+
+/* ====== TYPOGRAPHY ====== */
+h2 {
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  color: var(--stellar);
+  margin: 36px 0 16px;
+  letter-spacing: -0.01em;
+}
+
+h3 {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--platinum);
+  margin: 24px 0 10px;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+p { margin-bottom: 14px; }
+
+strong { color: var(--stellar); font-weight: 600; }
+
+a { color: var(--violet); text-decoration: none; }
+
+/* ====== TABLES ====== */
+.table-wrap {
+  margin: 20px 0;
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 13.5px;
+}
+
+thead {
+  background: var(--carbon);
+  border-bottom: 1px solid var(--steel-soft);
+}
+
+th {
+  text-align: left;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--platinum);
+  padding: 12px 18px;
+  font-weight: 600;
+}
+
+td {
+  padding: 13px 18px;
+  border-top: 1px solid var(--steel-soft);
+  color: var(--platinum);
+  vertical-align: top;
+}
+
+tbody tr:hover { background: rgba(255,255,255,0.015); }
+
+td:first-child {
+  color: var(--stellar);
+  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+td.wide { white-space: normal; font-family: var(--font-body); font-size: 13.5px; }
+
+/* ====== CODE BLOCK ====== */
+.codeblock {
+  position: relative;
+  background: var(--void);
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  margin: 18px 0;
+  overflow: hidden;
+}
+
+.codeblock-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--steel-soft);
+  background: var(--onyx);
+}
+
+.codeblock-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--mercury);
+}
+
+.copy-btn {
+  background: transparent;
+  border: 1px solid var(--steel);
+  color: var(--platinum);
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.15s;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.copy-btn:hover {
+  background: var(--violet-glow);
+  border-color: var(--violet);
+  color: var(--stellar);
+}
+
+.copy-btn.copied {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: var(--stellar);
+}
+
+.codeblock pre {
+  padding: 18px 20px;
+  font-family: var(--font-mono);
+  font-size: 12.5px;
+  line-height: 1.7;
+  color: var(--platinum);
+  white-space: pre-wrap;
+  word-break: break-word;
+  overflow-x: auto;
+}
+
+/* ====== PROMPT EXAMPLE ====== */
+.prompt {
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-left: 3px solid var(--violet);
+  border-radius: 6px;
+  padding: 18px 22px;
+  margin: 14px 0;
+  position: relative;
+}
+
+.prompt-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+}
+
+.prompt-body {
+  font-size: 13.5px;
+  line-height: 1.65;
+  color: var(--platinum);
+  font-style: italic;
+  font-family: var(--font-body);
+}
+
+.prompt .copy-btn {
+  font-style: normal;
+}
+
+/* ====== VOCAB CHIPS ====== */
+.vocab-group {
+  margin: 14px 0;
+}
+
+.vocab-cat {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--violet);
+  margin-bottom: 8px;
+  font-weight: 600;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.chip {
+  background: var(--carbon);
+  border: 1px solid var(--steel-soft);
+  border-radius: 4px;
+  padding: 5px 11px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--platinum);
+  transition: all 0.15s;
+}
+
+.chip:hover {
+  border-color: var(--violet-line);
+  color: var(--stellar);
+  cursor: default;
+}
+
+/* ====== KEY/VALUE LIST ====== */
+.kv-list {
+  list-style: none;
+  margin: 18px 0;
+}
+
+.kv-list li {
+  display: grid;
+  grid-template-columns: 36px 1fr;
+  gap: 18px;
+  padding: 14px 0;
+  border-bottom: 1px solid var(--steel-soft);
+}
+
+.kv-list li:last-child { border-bottom: none; }
+
+.kv-num {
+  font-family: var(--font-display);
+  font-size: 18px;
+  font-weight: 300;
+  color: var(--violet);
+}
+
+.kv-title {
+  color: var(--stellar);
+  font-weight: 600;
+  font-size: 14.5px;
+  margin-bottom: 4px;
+  display: block;
+}
+
+.kv-desc {
+  color: var(--mercury);
+  font-size: 13.5px;
+  line-height: 1.55;
+}
+
+/* ====== BIG QUOTE ====== */
+.bigquote {
+  margin: 60px 0;
+  padding: 40px 0;
+  text-align: center;
+  border-top: 1px solid var(--steel-soft);
+  border-bottom: 1px solid var(--steel-soft);
+}
+
+.bigquote-text {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 500;
+  line-height: 1.3;
+  color: var(--stellar);
+  letter-spacing: -0.01em;
+  max-width: 640px;
+  margin: 0 auto;
+}
+
+.bigquote-text em {
+  color: var(--violet);
+  font-style: italic;
+  font-weight: 400;
+}
+
+/* ====== BACK TO TOP ====== */
+.back-top {
+  position: fixed;
+  bottom: 32px;
+  right: 32px;
+  width: 44px;
+  height: 44px;
+  background: var(--carbon);
+  border: 1px solid var(--steel-soft);
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--platinum);
+  z-index: 200;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.25s;
+}
+
+.back-top.visible { opacity: 1; transform: translateY(0); }
+
+.back-top:hover {
+  background: var(--violet);
+  border-color: var(--violet);
+  color: var(--stellar);
+}
+
+/* ====== MOBILE TOGGLE ====== */
+.mobile-toggle {
+  display: none;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  width: 44px;
+  height: 44px;
+  background: var(--carbon);
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  cursor: pointer;
+  z-index: 300;
+  align-items: center;
+  justify-content: center;
+  color: var(--platinum);
+}
+
+/* ====== RESPONSIVE ====== */
+@media (max-width: 900px) {
+  .app { grid-template-columns: 1fr; }
+  .sidebar {
+    transform: translateX(-100%);
+    transition: transform 0.25s;
+    width: 280px;
+  }
+  .sidebar.open { transform: translateX(0); }
+  .main { grid-column: 1; }
+  .content { padding: 80px 24px 100px; }
+  .mobile-toggle { display: flex; }
+  .progress-bar { left: 0; }
+  .hero-title { font-size: 56px; }
+  .section-header { flex-direction: column; gap: 12px; }
+  .section-num { font-size: 48px; }
+  .section-title { font-size: 24px; }
+  .hero-watermark { display: none; }
+  .content { padding-top: 64px; }
+}
+
+/* ====== VISUAL DIAGRAMS ====== */
+.diagram {
+  margin: 24px 0;
+  background: linear-gradient(180deg, var(--carbon), var(--onyx));
+  border: 1px solid var(--steel-soft);
+  border-radius: 10px;
+  padding: 28px;
+  position: relative;
+}
+
+.diagram-label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--violet);
+  font-weight: 600;
+  margin-bottom: 16px;
+  text-align: center;
+}
+
+.diagram-caption {
+  font-family: var(--font-body);
+  font-size: 12px;
+  color: var(--mercury);
+  text-align: center;
+  margin-top: 14px;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Kelvin scale */
+.kelvin-bar {
+  height: 56px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, 
+    #FF6A1A 0%,
+    #FFA646 14%,
+    #FFCB7E 28%,
+    #FFE2B8 42%,
+    #FFF4E0 50%,
+    #FFFFFF 58%,
+    #E5EEFF 72%,
+    #B6D2FF 86%,
+    #6AA8FF 100%);
+  position: relative;
+  margin: 12px 0;
+}
+
+.kelvin-labels {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 4px;
+  margin-top: 8px;
+  font-family: var(--font-mono);
+  font-size: 10px;
+  color: var(--mercury);
+  text-align: center;
+}
+
+.kelvin-tick {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.kelvin-tick strong { color: var(--platinum); font-weight: 600; }
+
+/* Aspect ratio grid */
+.aspect-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.aspect-card {
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-radius: 6px;
+  padding: 16px 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  transition: all 0.15s;
+}
+
+.aspect-card:hover { border-color: var(--violet-line); }
+
+.aspect-box {
+  background: linear-gradient(135deg, var(--violet) 0%, #4a4485 100%);
+  border: 1px solid var(--violet);
+  border-radius: 3px;
+  opacity: 0.85;
+}
+
+.aspect-name {
+  font-family: var(--font-mono);
+  font-size: 12px;
+  color: var(--stellar);
+  font-weight: 600;
+}
+
+.aspect-use {
+  font-size: 10.5px;
+  color: var(--mercury);
+  text-align: center;
+  line-height: 1.4;
+}
+
+/* Material swatches */
+.material-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.material-card {
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  overflow: hidden;
+  transition: all 0.15s;
+}
+
+.material-card:hover { border-color: var(--violet-line); }
+
+.material-swatch {
+  height: 100px;
+  position: relative;
+}
+
+.material-info {
+  padding: 10px 12px;
+}
+
+.material-name {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--stellar);
+  font-weight: 600;
+  margin-bottom: 3px;
+  letter-spacing: 0.02em;
+}
+
+.material-desc {
+  font-size: 10.5px;
+  color: var(--mercury);
+  line-height: 1.4;
+}
+
+/* Lighting direction wheel */
+.light-wheel {
+  width: 280px;
+  height: 280px;
+  margin: 20px auto;
+  position: relative;
+}
+
+/* Lens comparison */
+.lens-row {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.lens-card {
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+}
+
+.lens-mm {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--violet);
+  letter-spacing: -0.02em;
+}
+
+.lens-use {
+  font-size: 11px;
+  color: var(--mercury);
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* Concept comparison (before/after) */
+.concept-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin: 16px 0;
+}
+
+.concept-card {
+  background: var(--onyx);
+  border-radius: 8px;
+  padding: 18px;
+  border: 1px solid var(--steel-soft);
+  border-left-width: 3px;
+}
+
+.concept-card.bad { border-left-color: #C25450; }
+.concept-card.good { border-left-color: #5A8B6B; }
+
+.concept-tag {
+  font-family: var(--font-display);
+  font-size: 9px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.concept-card.bad .concept-tag { color: #C25450; }
+.concept-card.good .concept-tag { color: #5A8B6B; }
+
+.concept-visual {
+  width: 100%;
+  height: 90px;
+  margin: 10px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.concept-text {
+  font-size: 12px;
+  color: var(--platinum);
+  line-height: 1.5;
+}
+
+/* Style mood swatches */
+.mood-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.mood-card {
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--steel-soft);
+  transition: all 0.15s;
+}
+
+.mood-card:hover { transform: translateY(-2px); border-color: var(--violet-line); }
+
+.mood-swatch {
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood-info {
+  background: var(--onyx);
+  padding: 10px 14px;
+}
+
+.mood-name {
+  font-family: var(--font-display);
+  font-size: 12px;
+  color: var(--stellar);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.mood-desc {
+  font-size: 10.5px;
+  color: var(--mercury);
+  line-height: 1.4;
+}
+
+/* Aperture circles */
+.aperture-row {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-end;
+  margin: 20px 0;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.aperture-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.aperture-circle {
+  background: var(--violet);
+  border-radius: 50%;
+  position: relative;
+}
+
+.aperture-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: var(--stellar);
+  font-weight: 600;
+}
+
+.aperture-effect {
+  font-size: 10px;
+  color: var(--mercury);
+  text-align: center;
+  max-width: 70px;
+  line-height: 1.3;
+}
+
+/* Camera angle diagrams */
+.angle-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 16px 0;
+}
+
+.angle-card {
+  background: var(--onyx);
+  border: 1px solid var(--steel-soft);
+  border-radius: 8px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  text-align: center;
+}
+
+.angle-name {
+  font-family: var(--font-display);
+  font-size: 11px;
+  color: var(--stellar);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.angle-feel {
+  font-size: 10px;
+  color: var(--mercury);
+  line-height: 1.4;
+}
+
+/* Face diagram zones */
+.face-diagram {
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+/* Emoji visual */
+.emoji-row {
+  font-size: 24px;
+  text-align: center;
+  letter-spacing: 0.4em;
+  margin: 16px 0;
+  user-select: none;
+}
+
+/* Section title emojis */
+.section-title-emoji {
+  font-size: 28px;
+  vertical-align: middle;
+  margin-right: 8px;
+  display: inline-block;
+}
+
+/* ====== SECTION BANNER IMAGES ====== */
+.section-banner {
+  width: 100%;
+  height: 200px;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 32px;
+  position: relative;
+}
+.section-banner img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.72;
+  display: block;
+  transition: opacity 0.3s;
+}
+.section-banner:hover img { opacity: 0.88; }
+.section-banner::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(123,115,200,0.18) 0%, transparent 60%),
+              linear-gradient(to bottom, transparent 30%, var(--void) 100%);
+  pointer-events: none;
+}
+
+/* Visual hint at top of section */
+.visual-hint {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--violet);
+  background: var(--violet-glow);
+  border: 1px solid var(--violet-line);
+  border-radius: 100px;
+  padding: 4px 12px;
+  margin-bottom: 16px;
+  font-weight: 600;
+}
+
+/* ====== NO RESULTS ====== */
+.no-results {
+  padding: 16px 24px;
+  font-size: 12px;
+  color: var(--mercury);
+  font-style: italic;
+  display: none;
+}
+
+.no-results.visible { display: block; }
+
+/* ====== HIGHLIGHT (search) ====== */
+mark {
+  background: var(--violet-glow);
+  color: var(--stellar);
+  padding: 0 2px;
+  border-radius: 2px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- Progress bar -->
+<div class="progress-bar" id="progressBar"></div>
+
+<!-- Mobile sidebar toggle -->
+<button class="mobile-toggle" id="mobileToggle" aria-label="Toggle navigation">
+  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+</button>
+
+<div class="app">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar">
+    <div class="sb-brand">
+      <div class="sb-logo">
+        <svg class="sb-diamond" viewBox="0 0 22 22" fill="none">
+          <path d="M11 1L20 11L11 21L2 11L11 1Z" stroke="#B8BDC8" stroke-width="1.2" fill="none"/>
+          <path d="M11 1L11 21M2 11L20 11M6 6L16 16M16 6L6 16" stroke="#3A3D47" stroke-width="0.6"/>
+          <path d="M11 5L15 11L11 17L7 11L11 5Z" fill="#7B73C8" fill-opacity="0.3" stroke="#7B73C8" stroke-width="0.5"/>
+        </svg>
+        <span class="sb-brand-name">PLATINUMAI</span>
+      </div>
+      <div class="sb-tagline">The Prompting Bible</div>
+    </div>
+
+    <div class="sb-search">
+      <input type="text" id="search" placeholder="Search sections..." />
+      <div class="sb-search-hint">
+        <span>Filter sections</span>
+        <span class="kbd">/</span>
+      </div>
+    </div>
+
+    <nav class="sb-nav" id="nav">
+      <div class="sb-section-label">Foundations</div>
+      <a href="#hero" class="sb-link"><span class="sb-num">00</span><span>📖 How to use this</span></a>
+      <a href="#s01" class="sb-link"><span class="sb-num">01</span><span>🧠 How the system reads prompts</span></a>
+
+      <div class="sb-section-label">The Craft</div>
+      <a href="#s02" class="sb-link"><span class="sb-num">02</span><span>💡 Lighting</span></a>
+      <a href="#s03" class="sb-link"><span class="sb-num">03</span><span>📷 Camera &amp; composition</span></a>
+      <a href="#s04" class="sb-link"><span class="sb-num">04</span><span>👁️ Skin, eyes, hair</span></a>
+      <a href="#s05" class="sb-link"><span class="sb-num">05</span><span>💎 Material rendering (PBR)</span></a>
+      <a href="#s06" class="sb-link"><span class="sb-num">06</span><span>🤖 3D &amp; robots</span></a>
+      <a href="#s07" class="sb-link"><span class="sb-num">07</span><span>📦 Product photography</span></a>
+      <a href="#s08" class="sb-link"><span class="sb-num">08</span><span>🔤 Brand &amp; typography</span></a>
+      <a href="#s09" class="sb-link"><span class="sb-num">09</span><span>🎨 Style clusters</span></a>
+
+      <div class="sb-section-label">The Mastery</div>
+      <a href="#s10" class="sb-link"><span class="sb-num">10</span><span>🔓 Hidden tricks</span></a>
+      <a href="#s11" class="sb-link"><span class="sb-num">11</span><span>🚫 Negative prompting</span></a>
+      <a href="#s12" class="sb-link"><span class="sb-num">12</span><span>🔄 Iteration protocols</span></a>
+      <a href="#s13" class="sb-link"><span class="sb-num">13</span><span>🖼️ Reference images</span></a>
+      <a href="#s14" class="sb-link"><span class="sb-num">14</span><span>📐 Aspect ratios</span></a>
+      <a href="#s15" class="sb-link"><span class="sb-num">15</span><span>⚠️ Failure modes</span></a>
+      <a href="#s16" class="sb-link"><span class="sb-num">16</span><span>🧬 Things you didn't ask</span></a>
+
+      <div class="sb-section-label">Action</div>
+      <a href="#s17" class="sb-link"><span class="sb-num">17</span><span>🎯 Master template</span></a>
+      <a href="#s18" class="sb-link"><span class="sb-num">18</span><span>✨ 10 practice prompts</span></a>
+      <a href="#s19" class="sb-link"><span class="sb-num">19</span><span>⚡ Custom Instructions ★</span></a>
+
+      <div class="no-results" id="noResults">No sections match.</div>
+    </nav>
+
+    <div class="sb-footer">
+      Geometric Intelligence
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+    <div class="content">
+
+      <!-- ======================= HERO ======================= -->
+      <section id="hero" class="hero">
+        <svg class="hero-watermark" viewBox="0 0 480 480" fill="none">
+          <path d="M240 20L460 240L240 460L20 240L240 20Z" stroke="#B8BDC8" stroke-width="1"/>
+          <path d="M240 20L240 460M20 240L460 240" stroke="#B8BDC8" stroke-width="0.5"/>
+          <path d="M120 120L360 360M360 120L120 360" stroke="#B8BDC8" stroke-width="0.4"/>
+          <path d="M240 80L400 240L240 400L80 240L240 80Z" stroke="#7B73C8" stroke-width="0.8"/>
+          <path d="M240 140L340 240L240 340L140 240L240 140Z" stroke="#B8BDC8" stroke-width="0.6"/>
+        </svg>
+
+        <div class="hero-eyebrow">PlatinumAI Internal Reference · v2.0</div>
+        <h1 class="hero-title">
+          The Master<br>
+          Prompting<br>
+          <span class="accent">Bible.</span>
+        </h1>
+        <p class="hero-sub">
+          World-class image direction for GPT-Image-2. Nineteen sections built from real production prompting — not beginner tutorials. Built for you to think like a senior art director, not a wishlist writer.
+        </p>
+
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">For</span>
+            <span class="hero-meta-value">You Always Win · CEO</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">Sections</span>
+            <span class="hero-meta-value">19 · navigable</span>
+          </div>
+          <div class="hero-meta-item">
+            <span class="hero-meta-label">Use</span>
+            <span class="hero-meta-value">Reference · not read-once</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ======================= HOW TO USE ======================= -->
+      <section class="section" id="how-to-use">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=820&q=80&auto=format&fit=crop" alt="Open book on desk — foundational reading">
+        </div>
+        <div class="section-header">
+          <div class="section-num">00</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Read first</div>
+            <h2 class="section-title">📖 How to use this bible</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">👁️ Built for visual brains</div>
+          <div class="callout-body">
+            Every section pairs <strong>text + diagram</strong> on purpose. Visual learning research (Paivio's dual-coding theory) shows ADHD brains retain <strong>up to 4× more</strong> when concepts are encoded in both verbal and visual channels. Look at the diagrams — they isolate the principle better than a photo could.
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">★ The core principle</div>
+          <div class="callout-body">
+            Your prompts should stop sounding like <em>"make it cool, realistic, luxury, 8K, cinematic."</em><br><br>
+            They should sound like <strong>a physically plausible product photograph of a specific object, with defined material behavior, controlled studio lighting, precise camera language, locked composition, and clear constraints.</strong><br><br>
+            That is the difference between beginner prompting and senior art-direction.
+          </div>
+        </div>
+
+        <h2>How every section is structured</h2>
+        <p>Same pattern everywhere so your brain scans fast:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Element</th><th>What it means</th></tr></thead>
+            <tbody>
+              <tr><td>TL;DR box</td><td class="wide">Violet-bordered callout. The one thing to remember.</td></tr>
+              <tr><td>Vocabulary</td><td class="wide">Copy-paste words to add to your prompts (cmd-C lives here).</td></tr>
+              <tr><td>Hidden trick</td><td class="wide">Gold-bordered callout. What pros do that beginners don't.</td></tr>
+              <tr><td>Common mistake</td><td class="wide">Red-bordered callout. What's killing your output.</td></tr>
+              <tr><td>Example prompts</td><td class="wide">3 per section. Copy button on each. Paste into ChatGPT and run.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Recommended first pass</h2>
+        <ul class="kv-list">
+          <li><span class="kv-num">1</span><div><span class="kv-title">Read this section + Section 17 (Master Template)</span><span class="kv-desc">Foundation + framework. 5 minutes.</span></div></li>
+          <li><span class="kv-num">2</span><div><span class="kv-title">Skim the TL;DR box of every section</span><span class="kv-desc">Just the violet-bordered boxes. 10 minutes.</span></div></li>
+          <li><span class="kv-num">3</span><div><span class="kv-title">Try the 10 practice prompts (Section 18)</span><span class="kv-desc">Each one practices a different skill.</span></div></li>
+          <li><span class="kv-num">4</span><div><span class="kv-title">Paste the Custom Instructions (Section 19)</span><span class="kv-desc">Permanent setup. Do this once, benefit forever.</span></div></li>
+          <li><span class="kv-num">5</span><div><span class="kv-title">Bookmark this page. Come back when you need specifics.</span><span class="kv-desc">Reference, not read-once.</span></div></li>
+        </ul>
+      </section>
+
+      <!-- ======================= SECTION 01 ======================= -->
+      <section class="section" id="s01">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1620712943543-bcc4688e7485?w=820&q=80&auto=format&fit=crop" alt="AI brain neural network — how the model reads prompts">
+        </div>
+        <div class="section-header">
+          <div class="section-num">01</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Mental model</div>
+            <h2 class="section-title">🧠 How the system reads your prompt</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Write prompts as if a human production team will read them. <strong>Clear hierarchy beats secret wording.</strong> The system maps your words to visual patterns — concrete nouns + production-brief language wins every time.</div>
+        </div>
+
+        <h2>Bad vs. better in one example</h2>
+
+        <div class="codeblock">
+          <div class="codeblock-header"><span class="codeblock-label">❌ Bad prompt</span></div>
+          <pre>Make it realistic, cinematic, 8K, amazing, luxury, viral, photorealistic, beautiful, cool.</pre>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">✓ Better prompt</span>
+            <button class="copy-btn" data-copy="A photorealistic luxury product hero shot of a translucent platinum crystal logo on matte black onyx. Centered composition, 85mm macro lens, shallow depth of field, soft rectangular key light from upper left, subtle rim light from behind, realistic contact shadow, sharp faceted edges, internal mineral veining, no glow, no neon, no extra text."><svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>Copy</button>
+          </div>
+          <pre>A photorealistic luxury product hero shot of a translucent platinum crystal logo on matte black onyx. Centered composition, 85mm macro lens, shallow depth of field, soft rectangular key light from upper left, subtle rim light from behind, realistic contact shadow, sharp faceted edges, internal mineral veining, no glow, no neon, no extra text.</pre>
+        </div>
+
+        <h2>High-weight prompt areas</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Prompt area</th><th>Why it matters</th></tr></thead>
+            <tbody>
+              <tr><td>First sentence</td><td class="wide">Establishes the main object/scene. Everything anchors here.</td></tr>
+              <tr><td>Concrete nouns</td><td class="wide">"Brushed titanium," "matte onyx," "wet asphalt" &gt; "premium."</td></tr>
+              <tr><td>Camera + light</td><td class="wide">Controls realism and composition more than any style word.</td></tr>
+              <tr><td>Material words</td><td class="wide">Prevents generic AI smoothness.</td></tr>
+              <tr><td>Preserve list</td><td class="wide">Critical for edits — locks what shouldn't change.</td></tr>
+              <tr><td>Exact text</td><td class="wide">Put your text in quotes. Helps the model render it cleanly.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Words that confuse the model</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Confusing phrase</th><th>Why it fails</th></tr></thead>
+            <tbody>
+              <tr><td>"Minimalist maximalist"</td><td class="wide">Opposing art directions.</td></tr>
+              <tr><td>"Real photo but 3D render"</td><td class="wide">Medium conflict unless clarified.</td></tr>
+              <tr><td>"Chrome but matte"</td><td class="wide">Chrome is reflective; matte is diffuse.</td></tr>
+              <tr><td>"Candid luxury studio"</td><td class="wide">Candid and studio conflict.</td></tr>
+              <tr><td>"Exact logo but redesign"</td><td class="wide">Preserve vs. alter conflict.</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick</div>
+          <div class="callout-body">Use <strong>role-like context inside the prompt</strong>:<br><br><em>"Treat this as a premium product photography brief for a luxury AI hardware brand."</em><br><br>This tells the model what decisions to optimize: taste, lighting, restraint, realism.</div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">Beginners describe vibe but not physics. <strong>"Luxury"</strong> isn't enough. Say what surface, what light, what camera, what material response, what composition.</div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Luxury object</span><button class="copy-btn" data-copy="Create a photorealistic luxury product hero shot of a four-point diamond crystal logo carved from translucent platinum-tinted mineral. Centered on matte black onyx, 85mm macro lens, shallow depth of field, soft rectangular key light from upper left, thin rim light on the rear edges, realistic contact shadow, razor-sharp facets, internal mineral veining, tiny micro-fractures, no glow, no neon, no text.">Copy</button></div>
+          <div class="prompt-body">Create a photorealistic luxury product hero shot of a four-point diamond crystal logo carved from translucent platinum-tinted mineral. Centered on matte black onyx, 85mm macro lens, shallow depth of field, soft rectangular key light from upper left, thin rim light on the rear edges, realistic contact shadow, razor-sharp facets, internal mineral veining, tiny micro-fractures, no glow, no neon, no text.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Realistic human</span><button class="copy-btn" data-copy="Create a natural photorealistic portrait of a woman in soft north-facing window light. 50mm lens, eye-level composition, visible pores, fine peach fuzz, slight skin redness around cheeks and nose, natural asymmetry, realistic eyebrow hairs, moist catchlights in the eyes, unretouched editorial photography, no plastic skin, no beauty-filter smoothing.">Copy</button></div>
+          <div class="prompt-body">Create a natural photorealistic portrait of a woman in soft north-facing window light. 50mm lens, eye-level composition, visible pores, fine peach fuzz, slight skin redness around cheeks and nose, natural asymmetry, realistic eyebrow hairs, moist catchlights in the eyes, unretouched editorial photography, no plastic skin, no beauty-filter smoothing.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Exact edit</span><button class="copy-btn" data-copy='Edit only the word on the skin. Replace the existing word with "PLATINUM" in chrome-like raised letterforms. Preserve the exact face, pose, skin tone, lighting, camera angle, background, and expression. The chrome letters should look physically embedded into the skin with slight redness and pressure marks around the edges. Do not change anything else.'>Copy</button></div>
+          <div class="prompt-body">Edit only the word on the skin. Replace the existing word with "PLATINUM" in chrome-like raised letterforms. Preserve the exact face, pose, skin tone, lighting, camera angle, background, and expression. The chrome letters should look physically embedded into the skin with slight redness and pressure marks around the edges. Do not change anything else.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 02 ======================= -->
+      <section class="section" id="s02">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1542038784456-1ea8e935640e?w=820&q=80&auto=format&fit=crop" alt="Dramatic cinematic lighting rays">
+        </div>
+        <div class="section-header">
+          <div class="section-num">02</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">The biggest quality lever</div>
+            <h2 class="section-title">💡 Lighting · The complete system</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">"Cinematic" is weak. Specify <strong>key direction, softness, color temperature, fill level, rim light, bounce, and practical sources</strong>. Lighting is the single biggest difference between amateur and pro output.</div>
+        </div>
+
+        <h2>🌡️ Kelvin color temperature — see what each number looks like</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ The Kelvin scale · warm → cool</div>
+          <div class="kelvin-bar"></div>
+          <div class="kelvin-labels">
+            <div class="kelvin-tick"><strong>1800K</strong><span>Candle</span></div>
+            <div class="kelvin-tick"><strong>2700K</strong><span>Tungsten</span></div>
+            <div class="kelvin-tick"><strong>4000K</strong><span>Studio</span></div>
+            <div class="kelvin-tick"><strong>5600K</strong><span>Daylight</span></div>
+            <div class="kelvin-tick"><strong>7500K</strong><span>Overcast</span></div>
+            <div class="kelvin-tick"><strong>10000K</strong><span>Icy blue</span></div>
+          </div>
+          <div class="diagram-caption">Use these exact numbers in prompts: <em>"warm 3200K tungsten key light from upper left"</em></div>
+        </div>
+
+        <h2>💎 Three-point lighting — the universal setup</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Premium product / portrait lighting</div>
+          <svg viewBox="0 0 500 280" style="width: 100%; max-width: 500px; display: block; margin: 0 auto;">
+            <!-- Subject (diamond) -->
+            <g transform="translate(250, 160)">
+              <path d="M0 -30 L25 0 L0 30 L-25 0 Z" fill="#B8BDC8" stroke="#7B73C8" stroke-width="1.5"/>
+              <text x="0" y="60" text-anchor="middle" font-family="Inter" font-size="11" fill="#8890A2">SUBJECT</text>
+            </g>
+            
+            <!-- Key light (upper left) -->
+            <g>
+              <circle cx="100" cy="60" r="22" fill="#FFE2B8" opacity="0.9"/>
+              <circle cx="100" cy="60" r="14" fill="#FFA646"/>
+              <line x1="120" y1="78" x2="225" y2="145" stroke="#FFA646" stroke-width="2" stroke-dasharray="4 4" opacity="0.6"/>
+              <!-- Light rays -->
+              <line x1="100" y1="82" x2="100" y2="92" stroke="#FFE2B8" stroke-width="2"/>
+              <line x1="82" y1="78" x2="74" y2="86" stroke="#FFE2B8" stroke-width="2"/>
+              <line x1="118" y1="78" x2="126" y2="86" stroke="#FFE2B8" stroke-width="2"/>
+              <text x="100" y="32" text-anchor="middle" font-family="Inter" font-size="11" fill="#FFE2B8" font-weight="600">KEY LIGHT</text>
+              <text x="100" y="46" text-anchor="middle" font-family="Inter" font-size="9" fill="#8890A2">large softbox · 5600K</text>
+            </g>
+            
+            <!-- Fill light (lower right) -->
+            <g>
+              <circle cx="380" cy="220" r="16" fill="#B8BDC8" opacity="0.5"/>
+              <circle cx="380" cy="220" r="9" fill="#B8BDC8"/>
+              <line x1="364" y1="208" x2="280" y2="170" stroke="#B8BDC8" stroke-width="1.5" stroke-dasharray="4 4" opacity="0.4"/>
+              <text x="380" y="252" text-anchor="middle" font-family="Inter" font-size="11" fill="#B8BDC8" font-weight="600">FILL</text>
+              <text x="380" y="266" text-anchor="middle" font-family="Inter" font-size="9" fill="#8890A2">low · soft</text>
+            </g>
+            
+            <!-- Rim/back light (behind, upper right) -->
+            <g>
+              <circle cx="400" cy="80" r="20" fill="#6AA8FF" opacity="0.6"/>
+              <circle cx="400" cy="80" r="12" fill="#6AA8FF"/>
+              <line x1="385" y1="95" x2="275" y2="150" stroke="#6AA8FF" stroke-width="2" stroke-dasharray="4 4" opacity="0.5"/>
+              <text x="400" y="40" text-anchor="middle" font-family="Inter" font-size="11" fill="#6AA8FF" font-weight="600">RIM LIGHT</text>
+              <text x="400" y="54" text-anchor="middle" font-family="Inter" font-size="9" fill="#8890A2">cool · behind · 8000K</text>
+            </g>
+            
+            <!-- Camera -->
+            <g transform="translate(250, 260)">
+              <rect x="-18" y="-8" width="36" height="14" rx="2" fill="#3A3D47" stroke="#8890A2"/>
+              <circle cx="0" cy="-1" r="5" fill="#191A1F" stroke="#B8BDC8"/>
+              <text x="0" y="22" text-anchor="middle" font-family="Inter" font-size="10" fill="#8890A2">CAMERA</text>
+            </g>
+          </svg>
+          <div class="diagram-caption">Key = defines shape · Fill = softens shadows · Rim = separates from background. Always upper-left key for premium feel.</div>
+        </div>
+
+        <h2>Lighting vocabulary</h2>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Soft light</div>
+          <div class="chips"><span class="chip">softbox</span><span class="chip">diffused window light</span><span class="chip">overcast daylight</span><span class="chip">silk diffusion</span><span class="chip">bounced light</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Hard light</div>
+          <div class="chips"><span class="chip">hard key</span><span class="chip">bare bulb</span><span class="chip">direct sun</span><span class="chip">sharp-edged shadows</span><span class="chip">specular highlights</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Direction</div>
+          <div class="chips"><span class="chip">upper-left key</span><span class="chip">side light</span><span class="chip">backlight</span><span class="chip">rim light</span><span class="chip">top light</span><span class="chip">underlight</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Atmosphere</div>
+          <div class="chips"><span class="chip">haze</span><span class="chip">mist</span><span class="chip">volumetric beams</span><span class="chip">dust in light</span><span class="chip">god rays</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Studio</div>
+          <div class="chips"><span class="chip">three-point lighting</span><span class="chip">clamshell</span><span class="chip">beauty dish</span><span class="chip">strip softbox</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Cinematic</div>
+          <div class="chips"><span class="chip">motivated lighting</span><span class="chip">practical lamps</span><span class="chip">negative fill</span><span class="chip">chiaroscuro</span></div>
+        </div>
+
+        <h2>Kelvin color temperature scale</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Kelvin</th><th>Look</th></tr></thead>
+            <tbody>
+              <tr><td>1800–2200K</td><td class="wide">Candle · fire · deep amber</td></tr>
+              <tr><td>2700–3200K</td><td class="wide">Tungsten · warm interior</td></tr>
+              <tr><td>4000K</td><td class="wide">Neutral warm studio</td></tr>
+              <tr><td>5600K</td><td class="wide">Daylight</td></tr>
+              <tr><td>6500–7500K</td><td class="wide">Cool daylight · overcast</td></tr>
+              <tr><td>9000K+</td><td class="wide">Icy blue · stylized moonlight</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Three-point lighting formula</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Premium product / portrait setup</span>
+            <button class="copy-btn" data-copy="Large soft key light from upper left, very low fill, thin cool rim light along the right edge, black negative fill on the shadow side.">Copy</button>
+          </div>
+          <pre>Key light:   main light, defines shape
+Fill light:  softens shadows
+Rim/back:    separates subject from background
+
+For premium images:
+"Large soft key light from upper left,
+ very low fill, thin cool rim light along the
+ right edge, black negative fill on the shadow side."</pre>
+        </div>
+
+        <h2>Aesthetic clusters that pull entire moods</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Phrase</th><th>Pulls this cluster</th></tr></thead>
+            <tbody>
+              <tr><td>"soft window light"</td><td class="wide">Natural portrait, believable skin</td></tr>
+              <tr><td>"large softbox reflection"</td><td class="wide">Premium product photography</td></tr>
+              <tr><td>"hard key, deep shadows"</td><td class="wide">Cinematic noir</td></tr>
+              <tr><td>"overcast daylight"</td><td class="wide">Documentary realism</td></tr>
+              <tr><td>"golden hour backlight"</td><td class="wide">Romantic lifestyle</td></tr>
+              <tr><td>"blue hour practicals"</td><td class="wide">Cinematic city / night</td></tr>
+              <tr><td>"volumetric beams through haze"</td><td class="wide">Dramatic sci-fi · cathedral · concert</td></tr>
+              <tr><td>"negative fill"</td><td class="wide">High-end editorial contrast</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Reflective materials</div>
+          <div class="callout-body">For reflective materials, describe the <strong>reflection shape</strong>, not just the object.<br><br>Instead of: <em>chrome logo</em><br>Say: <strong>mirror-polished chrome with long rectangular softbox reflections bending across the beveled edges</strong></div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">People ask for chrome or glass but forget to give the material <strong>something to reflect</strong>. Reflective materials need an environment, gradient, light panels, or contrast.</div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Studio product light</span><button class="copy-btn" data-copy="A luxury perfume bottle on glossy black acrylic, studio product photography. Large rectangular softbox reflected vertically along the glass, small white card reflection on the cap, black negative fill on both sides, subtle rim light outlining the silhouette, realistic contact shadow, 85mm lens, f/5.6, premium fragrance campaign.">Copy</button></div>
+          <div class="prompt-body">A luxury perfume bottle on glossy black acrylic, studio product photography. Large rectangular softbox reflected vertically along the glass, small white card reflection on the cap, black negative fill on both sides, subtle rim light outlining the silhouette, realistic contact shadow, 85mm lens, f/5.6, premium fragrance campaign.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Cinematic portrait</span><button class="copy-btn" data-copy="Photorealistic cinematic portrait of a robotic humanoid in a dark lab. Hard cold key light from upper left, dim blue practical lights behind, thin rim light tracing the shoulders, atmospheric haze catching the light beams, deep shadows, realistic metal reflections, 35mm lens, low angle, serious editorial mood.">Copy</button></div>
+          <div class="prompt-body">Photorealistic cinematic portrait of a robotic humanoid in a dark lab. Hard cold key light from upper left, dim blue practical lights behind, thin rim light tracing the shoulders, atmospheric haze catching the light beams, deep shadows, realistic metal reflections, 35mm lens, low angle, serious editorial mood.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Engraved logo</span><button class="copy-btn" data-copy='A matte black metal plaque with the words "PLATINUM AI" deeply engraved into the surface. Low raking side light from the left reveals recessed grooves, beveled inner edges, subtle platinum highlights inside each letter, realistic dust in the cuts, luxury watch-dial precision, no printed text.'>Copy</button></div>
+          <div class="prompt-body">A matte black metal plaque with the words "PLATINUM AI" deeply engraved into the surface. Low raking side light from the left reveals recessed grooves, beveled inner edges, subtle platinum highlights inside each letter, realistic dust in the cuts, luxury watch-dial precision, no printed text.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 03 ======================= -->
+      <section class="section" id="s03">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=820&q=80&auto=format&fit=crop" alt="Camera lens and composition">
+        </div>
+        <div class="section-header">
+          <div class="section-num">03</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Frame the shot like a director</div>
+            <h2 class="section-title">📷 Camera, lens &amp; composition</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Always specify <strong>lens (focal length), aperture (f-stop), camera body, and shot type.</strong> Four words alone elevate every prompt.</div>
+        </div>
+
+        <h2>🔍 Lens focal length — see how each one frames</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Same subject, different lens = different feel</div>
+          <div class="lens-row">
+            <div class="lens-card"><div class="lens-mm">14mm</div><div class="lens-use">Extreme wide · architecture · distortion</div></div>
+            <div class="lens-card"><div class="lens-mm">35mm</div><div class="lens-use">Editorial · documentary realism</div></div>
+            <div class="lens-card"><div class="lens-mm">50mm</div><div class="lens-use">Natural portrait · everyday eye</div></div>
+            <div class="lens-card"><div class="lens-mm">85mm</div><div class="lens-use">Premium portrait · shallow depth</div></div>
+            <div class="lens-card"><div class="lens-mm">100mm</div><div class="lens-use">Macro product · skin pores</div></div>
+            <div class="lens-card"><div class="lens-mm">135mm</div><div class="lens-use">Fashion · compressed background</div></div>
+          </div>
+          <div class="diagram-caption">Wide = distorts faces (avoid for portraits) · Long = flatters faces (use 85mm+ for portraits)</div>
+        </div>
+
+        <h2>⚪ Aperture — depth of field visualized</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Lower f-stop = more blur · Higher f-stop = more sharp</div>
+          <div class="aperture-row">
+            <div class="aperture-item">
+              <div class="aperture-circle" style="width: 56px; height: 56px;"></div>
+              <div class="aperture-label">f/1.2</div>
+              <div class="aperture-effect">Dreamy bokeh</div>
+            </div>
+            <div class="aperture-item">
+              <div class="aperture-circle" style="width: 44px; height: 44px;"></div>
+              <div class="aperture-label">f/2.8</div>
+              <div class="aperture-effect">Portrait standard</div>
+            </div>
+            <div class="aperture-item">
+              <div class="aperture-circle" style="width: 32px; height: 32px;"></div>
+              <div class="aperture-label">f/5.6</div>
+              <div class="aperture-effect">Product detail</div>
+            </div>
+            <div class="aperture-item">
+              <div class="aperture-circle" style="width: 22px; height: 22px;"></div>
+              <div class="aperture-label">f/11</div>
+              <div class="aperture-effect">Architecture</div>
+            </div>
+            <div class="aperture-item">
+              <div class="aperture-circle" style="width: 14px; height: 14px;"></div>
+              <div class="aperture-label">f/16</div>
+              <div class="aperture-effect">Everything sharp</div>
+            </div>
+          </div>
+          <div class="diagram-caption">Circle size = how much light enters. Bigger circle = more blur in background. Use f/1.4-2.8 for portraits, f/5.6-11 for products.</div>
+        </div>
+
+        <h2>🎬 Camera angles — what each feels like</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Angle changes the emotional read of any subject</div>
+          <div class="angle-grid">
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                <path d="M8 35 L20 22" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="35" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">LOW ANGLE</div>
+              <div class="angle-feel">Power · dominance · heroic</div>
+            </div>
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                <path d="M8 5 L20 18" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="5" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">HIGH ANGLE</div>
+              <div class="angle-feel">Vulnerability · intimacy</div>
+            </div>
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                <line x1="8" y1="20" x2="20" y2="20" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="20" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">EYE LEVEL</div>
+              <div class="angle-feel">Natural · neutral · honest</div>
+            </div>
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <g transform="rotate(-15 30 25)">
+                  <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                </g>
+                <line x1="8" y1="22" x2="20" y2="22" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="22" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">DUTCH ANGLE</div>
+              <div class="angle-feel">Tension · unease · drama</div>
+            </div>
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                <path d="M8 38 L20 24" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="38" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">WORM'S EYE</div>
+              <div class="angle-feel">Towering · intimidating</div>
+            </div>
+            <div class="angle-card">
+              <svg width="60" height="40" viewBox="0 0 60 40">
+                <rect x="22" y="14" width="16" height="22" fill="#7B73C8" opacity="0.7"/>
+                <path d="M8 2 L20 16" stroke="#B8BDC8" stroke-width="1.5"/>
+                <circle cx="8" cy="2" r="3" fill="#B8BDC8"/>
+              </svg>
+              <div class="angle-name">BIRD'S EYE</div>
+              <div class="angle-feel">Omniscient · design feel</div>
+            </div>
+          </div>
+        </div>
+
+        <h2>Lens vocabulary — what each focal length triggers</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Lens</th><th>What it triggers</th></tr></thead>
+            <tbody>
+              <tr><td>14–20mm</td><td class="wide">Extreme wide · architecture · distorted perspective</td></tr>
+              <tr><td>24mm</td><td class="wide">Environmental cinematic scene</td></tr>
+              <tr><td>28mm</td><td class="wide">Street photography · natural documentary</td></tr>
+              <tr><td>35mm</td><td class="wide">Editorial · human scene · cinematic realism</td></tr>
+              <tr><td>50mm</td><td class="wide">Natural portrait · everyday realism</td></tr>
+              <tr><td>85mm</td><td class="wide">Premium portrait · shallow depth</td></tr>
+              <tr><td>100mm macro</td><td class="wide">Product detail · skin pores · jewelry</td></tr>
+              <tr><td>135mm</td><td class="wide">Compressed background · fashion editorial</td></tr>
+              <tr><td>tilt-shift</td><td class="wide">Architecture · straight verticals · miniature control</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Aperture vocabulary</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Aperture</th><th>Look</th></tr></thead>
+            <tbody>
+              <tr><td>f/1.2–f/1.8</td><td class="wide">Very shallow depth · dreamy portrait</td></tr>
+              <tr><td>f/2–f/2.8</td><td class="wide">Portrait / product subject separation</td></tr>
+              <tr><td>f/4–f/5.6</td><td class="wide">Controlled product detail</td></tr>
+              <tr><td>f/8–f/11</td><td class="wide">Architecture · full scene sharpness</td></tr>
+              <tr><td>f/16</td><td class="wide">Technical · everything sharp</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Camera body aesthetic triggers</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Camera phrase</th><th>Cluster pulled</th></tr></thead>
+            <tbody>
+              <tr><td>Hasselblad H6D medium format</td><td class="wide">Luxury product · editorial clarity</td></tr>
+              <tr><td>Phase One IQ4 studio camera</td><td class="wide">High-end commercial product</td></tr>
+              <tr><td>Leica M11</td><td class="wide">Street · editorial realism</td></tr>
+              <tr><td>ARRI Alexa 65</td><td class="wide">Cinematic film look</td></tr>
+              <tr><td>RED V-Raptor</td><td class="wide">Sharp commercial cinematic</td></tr>
+              <tr><td>Canon EOS R5</td><td class="wide">Documentary realism</td></tr>
+              <tr><td>iPhone flash photo</td><td class="wide">Casual candid · social realism</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Composition vocabulary</h2>
+        <div class="vocab-group">
+          <div class="chips"><span class="chip">rule of thirds</span><span class="chip">centered symmetrical</span><span class="chip">low-angle hero</span><span class="chip">generous negative space</span><span class="chip">leading lines</span><span class="chip">frame within frame</span><span class="chip">dutch angle</span><span class="chip">flat lay</span><span class="chip">worm's-eye</span><span class="chip">bird's-eye</span></div>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Camera distance</div>
+          <div class="callout-body">Specify <strong>camera distance</strong>, not just lens:<br><br><em>"85mm lens, tight head-and-shoulders portrait, camera 1.5 meters from subject"</em><br><br>This reduces full-body drift.</div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">Using "wide angle" when you want a flattering portrait. Wide lenses exaggerate faces. <strong>Use 50mm or 85mm for portraits.</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Editorial portrait</span><button class="copy-btn" data-copy="Photorealistic editorial portrait of a female AI founder in a dark graphite suit, seated beside a window. 85mm lens, f/2.0, tight head-and-shoulders framing, subject on the left third, soft daylight from camera left, subtle catchlights, realistic skin texture, quiet confidence, magazine-style but unretouched.">Copy</button></div>
+          <div class="prompt-body">Photorealistic editorial portrait of a female AI founder in a dark graphite suit, seated beside a window. 85mm lens, f/2.0, tight head-and-shoulders framing, subject on the left third, soft daylight from camera left, subtle catchlights, realistic skin texture, quiet confidence, magazine-style but unretouched.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Architecture</span><button class="copy-btn" data-copy="Ultra-realistic architectural photograph of a minimalist concrete AI research lobby. 24mm tilt-shift lens, f/8, perfectly straight vertical lines, symmetrical composition, polished concrete floor, soft skylight, warm wood accents, calm premium technology atmosphere, no people.">Copy</button></div>
+          <div class="prompt-body">Ultra-realistic architectural photograph of a minimalist concrete AI research lobby. 24mm tilt-shift lens, f/8, perfectly straight vertical lines, symmetrical composition, polished concrete floor, soft skylight, warm wood accents, calm premium technology atmosphere, no people.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Engraved product macro</span><button class="copy-btn" data-copy="Macro photograph of chrome letters engraved into translucent skin-like silicone. 100mm macro lens, f/4, camera at a low grazing angle, raking side light reveals the recessed edges, soft pink pressure marks around the letterforms, realistic pores and micro texture.">Copy</button></div>
+          <div class="prompt-body">Macro photograph of chrome letters engraved into translucent skin-like silicone. 100mm macro lens, f/4, camera at a low grazing angle, raking side light reveals the recessed edges, soft pink pressure marks around the letterforms, realistic pores and micro texture.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 04 ======================= -->
+      <section class="section" id="s04">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=820&q=80&auto=format&fit=crop" alt="Cinematic portrait skin eyes hair">
+        </div>
+        <div class="section-header">
+          <div class="section-num">04</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Kill the plastic AI look</div>
+            <h2 class="section-title">👁️ Skin, eyes, eyebrows, hair</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Describe <strong>microstructure, color variation, asymmetry, and light interaction.</strong> Specify <em>where</em> the detail appears (cheeks, nose, neck, hands) — not just "realistic skin."</div>
+        </div>
+
+        <h2>🆚 Plastic AI vs realistic — what changes</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Two faces · same prompt structure · different vocabulary</div>
+          <div class="concept-row">
+            <div class="concept-card bad">
+              <div class="concept-tag">❌ PLASTIC AI</div>
+              <svg class="concept-visual" viewBox="0 0 120 90">
+                <!-- Smooth featureless face -->
+                <ellipse cx="60" cy="50" rx="32" ry="38" fill="#D4B5A3"/>
+                <circle cx="48" cy="42" r="3" fill="#3A2A1F"/>
+                <circle cx="72" cy="42" r="3" fill="#3A2A1F"/>
+                <path d="M52 60 Q60 64 68 60" stroke="#A87858" stroke-width="1.5" fill="none"/>
+                <!-- "Plastic" highlights -->
+                <ellipse cx="48" cy="35" rx="6" ry="3" fill="#FFFFFF" opacity="0.35"/>
+                <ellipse cx="72" cy="35" rx="6" ry="3" fill="#FFFFFF" opacity="0.35"/>
+                <ellipse cx="60" cy="68" rx="8" ry="2" fill="#FFFFFF" opacity="0.25"/>
+              </svg>
+              <div class="concept-text"><strong>No pores · no asymmetry · perfect smooth skin · airbrushed sheen. Reads "AI" instantly.</strong></div>
+            </div>
+            <div class="concept-card good">
+              <div class="concept-tag">✓ REALISTIC</div>
+              <svg class="concept-visual" viewBox="0 0 120 90">
+                <!-- Face with texture -->
+                <ellipse cx="60" cy="50" rx="32" ry="38" fill="#D4B5A3"/>
+                <!-- Pore/texture dots -->
+                <circle cx="50" cy="48" r="0.5" fill="#A87858"/>
+                <circle cx="55" cy="52" r="0.5" fill="#A87858"/>
+                <circle cx="63" cy="50" r="0.5" fill="#A87858"/>
+                <circle cx="68" cy="55" r="0.5" fill="#A87858"/>
+                <circle cx="58" cy="58" r="0.5" fill="#A87858"/>
+                <circle cx="72" cy="48" r="0.5" fill="#A87858"/>
+                <circle cx="46" cy="55" r="0.5" fill="#A87858"/>
+                <!-- Slight redness on cheeks -->
+                <ellipse cx="46" cy="55" rx="7" ry="5" fill="#E07060" opacity="0.15"/>
+                <ellipse cx="74" cy="55" rx="7" ry="5" fill="#E07060" opacity="0.15"/>
+                <!-- Asymmetric eyes -->
+                <ellipse cx="48" cy="42" rx="3" ry="2.5" fill="#3A2A1F"/>
+                <ellipse cx="72" cy="43" rx="3" ry="2.5" fill="#3A2A1F"/>
+                <!-- Catchlights -->
+                <circle cx="49" cy="41" r="0.7" fill="#FFFFFF"/>
+                <circle cx="73" cy="42" r="0.7" fill="#FFFFFF"/>
+                <!-- Eyebrow hairs -->
+                <line x1="44" y1="37" x2="52" y2="36" stroke="#5A3A28" stroke-width="0.5"/>
+                <line x1="68" y1="36" x2="76" y2="37" stroke="#5A3A28" stroke-width="0.5"/>
+                <!-- Lip with line -->
+                <path d="M52 60 Q60 64 68 60" stroke="#A87858" stroke-width="1.5" fill="none"/>
+                <line x1="58" y1="62" x2="60" y2="63" stroke="#8B5A40" stroke-width="0.3"/>
+              </svg>
+              <div class="concept-text"><strong>Visible pores · slight redness on cheeks · asymmetric eyes · catchlights · individual brow hairs. Reads "real photo."</strong></div>
+            </div>
+          </div>
+          <div class="diagram-caption">The right side has the same face — but with <em>"visible pores, slight redness around nose, individual eyebrow hairs, catchlights, natural asymmetry"</em> in the prompt.</div>
+        </div>
+
+        <h2>📍 Where to add detail on a face</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Don't say "realistic skin" — name the zones</div>
+          <svg viewBox="0 0 360 260" style="width: 100%; max-width: 360px; display: block; margin: 0 auto;">
+            <!-- Face outline -->
+            <ellipse cx="180" cy="130" rx="80" ry="105" fill="none" stroke="#3A3D47" stroke-width="1.5"/>
+            <!-- Features -->
+            <ellipse cx="155" cy="115" rx="6" ry="4" fill="none" stroke="#8890A2" stroke-width="1"/>
+            <ellipse cx="205" cy="115" rx="6" ry="4" fill="none" stroke="#8890A2" stroke-width="1"/>
+            <path d="M180 130 L180 150" stroke="#8890A2" stroke-width="1"/>
+            <path d="M168 165 Q180 172 192 165" stroke="#8890A2" stroke-width="1.5" fill="none"/>
+            
+            <!-- Zone callouts -->
+            <!-- Forehead -->
+            <circle cx="180" cy="80" r="3" fill="#7B73C8"/>
+            <line x1="183" y1="80" x2="290" y2="60" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="295" y="62" font-family="Inter" font-size="11" fill="#B8BDC8">FOREHEAD</text>
+            <text x="295" y="75" font-family="Inter" font-size="9" fill="#8890A2">fine lines · subtle sheen</text>
+            
+            <!-- Cheeks -->
+            <circle cx="135" cy="140" r="3" fill="#7B73C8"/>
+            <line x1="132" y1="140" x2="60" y2="155" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="10" y="157" font-family="Inter" font-size="11" fill="#B8BDC8">CHEEKS</text>
+            <text x="10" y="170" font-family="Inter" font-size="9" fill="#8890A2">pores · slight redness</text>
+            
+            <!-- Nose -->
+            <circle cx="180" cy="135" r="3" fill="#7B73C8"/>
+            <line x1="183" y1="135" x2="290" y2="135" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="295" y="137" font-family="Inter" font-size="11" fill="#B8BDC8">NOSE</text>
+            <text x="295" y="150" font-family="Inter" font-size="9" fill="#8890A2">visible pores around bridge</text>
+            
+            <!-- Jaw -->
+            <circle cx="145" cy="200" r="3" fill="#7B73C8"/>
+            <line x1="142" y1="200" x2="60" y2="215" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="10" y="217" font-family="Inter" font-size="11" fill="#B8BDC8">JAWLINE</text>
+            <text x="10" y="230" font-family="Inter" font-size="9" fill="#8890A2">peach fuzz · soft shadow</text>
+            
+            <!-- Eyes -->
+            <circle cx="225" cy="115" r="3" fill="#7B73C8"/>
+            <line x1="228" y1="115" x2="290" y2="100" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="295" y="102" font-family="Inter" font-size="11" fill="#B8BDC8">EYES</text>
+            <text x="295" y="115" font-family="Inter" font-size="9" fill="#8890A2">catchlights · wet cornea</text>
+            
+            <!-- Lips -->
+            <circle cx="180" cy="170" r="3" fill="#7B73C8"/>
+            <line x1="183" y1="170" x2="290" y2="180" stroke="#7B73C8" stroke-width="0.8"/>
+            <text x="295" y="182" font-family="Inter" font-size="11" fill="#B8BDC8">LIPS</text>
+            <text x="295" y="195" font-family="Inter" font-size="9" fill="#8890A2">vertical lines · subtle chap</text>
+          </svg>
+          <div class="diagram-caption">Each zone = a different vocabulary. Name 2-3 zones in your prompt instead of generic "realistic skin."</div>
+        </div>
+
+        <h2>Skin vocabulary</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Goal</th><th>Words to use</th></tr></thead>
+            <tbody>
+              <tr><td>Real texture</td><td class="wide">visible pores · fine lines · peach fuzz · micro texture</td></tr>
+              <tr><td>Natural color</td><td class="wide">uneven tone · slight redness · warm/cool undertones</td></tr>
+              <tr><td>Light physics</td><td class="wide">subsurface scattering · translucent ear edges · soft skin sheen</td></tr>
+              <tr><td>Imperfection</td><td class="wide">freckles · tiny blemishes · pores around nose · smile lines</td></tr>
+              <tr><td>Anti-plastic</td><td class="wide">unretouched · natural skin texture · no beauty filter</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Eye, brow, hair, lip vocabulary</h2>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Eyes</div>
+          <div class="chips"><span class="chip">wet cornea</span><span class="chip">sharp iris fibers</span><span class="chip">limbal ring</span><span class="chip">small catchlights</span><span class="chip">realistic tear line</span><span class="chip">subsurface red inner corner</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Eyebrows</div>
+          <div class="chips"><span class="chip">individual eyebrow hairs</span><span class="chip">uneven density</span><span class="chip">stray hairs</span><span class="chip">natural growth direction</span><span class="chip">not painted-on</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Hair</div>
+          <div class="chips"><span class="chip">flyaway hairs</span><span class="chip">varied strand thickness</span><span class="chip">natural frizz</span><span class="chip">realistic hairline</span><span class="chip">baby hairs</span><span class="chip">soft specular highlights</span></div>
+        </div>
+
+        <div class="vocab-group">
+          <div class="vocab-cat">Lips</div>
+          <div class="chips"><span class="chip">fine lip lines</span><span class="chip">natural moisture</span><span class="chip">slight asymmetry</span><span class="chip">subtle chapping</span><span class="chip">soft highlight on lower lip</span></div>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Anti-AI sheen</div>
+          <div class="callout-body">Use <strong>both</strong> negative + positive framing:<br><br>Negative: <em>"not a beauty retouch, not a skincare ad, not airbrushed"</em><br>Positive: <strong>"realistic pores, natural unevenness, honest documentary texture"</strong></div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">Only saying "realistic skin." Model may still give smooth influencer skin. <strong>Say where: cheeks, nose, forehead, neck, hands.</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Natural portrait</span><button class="copy-btn" data-copy="A close-up photorealistic portrait of a woman in soft window light. Visible pores on cheeks and nose, fine peach fuzz along jawline, slight redness around nostrils, natural under-eye texture, realistic eyebrow hairs, moist eyes with small catchlights, unretouched 50mm portrait, no airbrushing.">Copy</button></div>
+          <div class="prompt-body">A close-up photorealistic portrait of a woman in soft window light. Visible pores on cheeks and nose, fine peach fuzz along jawline, slight redness around nostrils, natural under-eye texture, realistic eyebrow hairs, moist eyes with small catchlights, unretouched 50mm portrait, no airbrushing.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Eye detail</span><button class="copy-btn" data-copy="Extreme close-up of a human eye in natural daylight. Sharp iris fibers, wet cornea, realistic tear line, tiny blood vessels near the sclera, soft eyelashes crossing the frame, skin pores around eyelid, 100mm macro lens, shallow depth of field, no fantasy glow.">Copy</button></div>
+          <div class="prompt-body">Extreme close-up of a human eye in natural daylight. Sharp iris fibers, wet cornea, realistic tear line, tiny blood vessels near the sclera, soft eyelashes crossing the frame, skin pores around eyelid, 100mm macro lens, shallow depth of field, no fantasy glow.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Chrome skin lettering</span><button class="copy-btn" data-copy='Photorealistic close-up of the word "PLATINUM" formed as raised chrome letters emerging from human skin. The skin remains realistic with pores, fine hairs, slight redness and pressure marks around each letter, chrome reflections follow the curved skin surface, macro lens, soft medical studio lighting.'>Copy</button></div>
+          <div class="prompt-body">Photorealistic close-up of the word "PLATINUM" formed as raised chrome letters emerging from human skin. The skin remains realistic with pores, fine hairs, slight redness and pressure marks around each letter, chrome reflections follow the curved skin surface, macro lens, soft medical studio lighting.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 05 ======================= -->
+      <section class="section" id="s05">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=820&q=80&auto=format&fit=crop" alt="Metallic PBR material rendering">
+        </div>
+        <div class="section-header">
+          <div class="section-num">05</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Glass, metal, crystal, fabric</div>
+            <h2 class="section-title">💎 Material rendering · PBR</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Material quality depends on how you describe surfaces interacting with light. <strong>Always add micro-imperfections</strong> (scratches, dust, fingerprints) — perfect surfaces look fake.</div>
+        </div>
+
+        <h2>🎨 See the materials — visual swatch reference</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Same shape, different material vocabulary = different result</div>
+          <div class="material-grid">
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, #1a1a1a 0%, #4a4a4a 30%, #b8b8b8 50%, #ffffff 60%, #8a8a8a 75%, #2a2a2a 100%);"></div>
+              <div class="material-info">
+                <div class="material-name">CHROME</div>
+                <div class="material-desc">Mirror reflections · crisp highlights · needs environment to reflect</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, #6e7380 0%, #9aa0ac 40%, #c4c8d2 55%, #a8aeb8 70%, #6e7380 100%);"></div>
+              <div class="material-info">
+                <div class="material-name">PLATINUM</div>
+                <div class="material-desc">Cool white · satin sheen · dense luxury metal</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: repeating-linear-gradient(90deg, #4a4f5a 0px, #6e7380 1px, #5a5f6a 2px, #4a4f5a 3px), linear-gradient(180deg, transparent, rgba(255,255,255,0.1));"></div>
+              <div class="material-info">
+                <div class="material-name">BRUSHED STEEL</div>
+                <div class="material-desc">Linear grain · anisotropic highlights · directional</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, rgba(100,140,180,0.4) 0%, rgba(180,210,240,0.6) 40%, rgba(240,250,255,0.7) 55%, rgba(160,200,240,0.5) 70%, rgba(80,120,170,0.4) 100%); backdrop-filter: blur(2px);"></div>
+              <div class="material-info">
+                <div class="material-name">CRYSTAL</div>
+                <div class="material-desc">Translucent · refraction · internal facets · mineral veining</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, #14151a 0%, #1f2128 50%, #14151a 100%);"></div>
+              <div class="material-info">
+                <div class="material-name">MATTE ONYX</div>
+                <div class="material-desc">No reflection · soft falloff · absorbs light</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 30%, #4a4a4a 50%, #2a2a2a 70%, #1a1a1a 100%);"></div>
+              <div class="material-info">
+                <div class="material-name">GUNMETAL</div>
+                <div class="material-desc">Anodized black · subtle sheen · industrial</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, #c9a961 0%, #e5c989 40%, #f5e5b5 55%, #c9a961 75%, #8a7440 100%);"></div>
+              <div class="material-info">
+                <div class="material-name">GOLD</div>
+                <div class="material-desc">Warm karat tone · Fresnel falloff · luxury patina</div>
+              </div>
+            </div>
+            <div class="material-card">
+              <div class="material-swatch" style="background: linear-gradient(135deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.15) 30%, rgba(255,255,255,0.08) 50%, rgba(255,255,255,0.2) 70%, rgba(255,255,255,0.05) 100%), #2a2d35;"></div>
+              <div class="material-info">
+                <div class="material-name">FROSTED GLASS</div>
+                <div class="material-desc">Diffuse transmission · cloudy · soft refraction</div>
+              </div>
+            </div>
+          </div>
+          <div class="diagram-caption">Hover any swatch. Each material needs different vocabulary — copy from Sections below.</div>
+        </div>
+
+        <h2>PBR property vocabulary</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Property</th><th>Words</th></tr></thead>
+            <tbody>
+              <tr><td>Roughness</td><td class="wide">matte · satin · semi-gloss · mirror-polished</td></tr>
+              <tr><td>Metalness</td><td class="wide">metallic · non-metallic · anodized · plated</td></tr>
+              <tr><td>Transmission</td><td class="wide">transparent · translucent · frosted · cloudy</td></tr>
+              <tr><td>Subsurface</td><td class="wide">waxy · skin-like · milky · jade-like</td></tr>
+              <tr><td>Normal detail</td><td class="wide">micro scratches · brushed grain · pitted texture</td></tr>
+              <tr><td>Edge behavior</td><td class="wide">beveled · chipped · sharp cut · worn corners</td></tr>
+              <tr><td>Reflection</td><td class="wide">mirror · softbox · anisotropic highlight</td></tr>
+              <tr><td>Refraction</td><td class="wide">caustics · distorted background through glass</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Glass &amp; crystal (your primary brand material)</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Crystal vocabulary block</span>
+            <button class="copy-btn" data-copy="transparent · translucent · frosted · refractive · internal inclusions · micro-fractures · caustics · edge highlights · chromatic dispersion · mineral veining · cloudy core · polished facets">Copy</button>
+          </div>
+          <pre>transparent · translucent · frosted · refractive
+internal inclusions · micro-fractures · caustics
+edge highlights · chromatic dispersion
+mineral veining · cloudy core · polished facets
+
+Avoid: "glowy hologram" (unless sci-fi intentional)</pre>
+        </div>
+
+        <h2>Metal variations</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Metal</th><th>Prompt language</th></tr></thead>
+            <tbody>
+              <tr><td>Chrome</td><td class="wide">mirror-polished chrome · crisp reflections</td></tr>
+              <tr><td>Platinum</td><td class="wide">cool white metal · subtle satin sheen · dense luxury metal</td></tr>
+              <tr><td>Brushed steel</td><td class="wide">linear grain · anisotropic highlights</td></tr>
+              <tr><td>Titanium</td><td class="wide">dark satin grey · lightweight aerospace finish</td></tr>
+              <tr><td>Black metal</td><td class="wide">blackened steel · gunmetal · anodized finish</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Luxury = imperfections</div>
+          <div class="callout-body">For luxury materials, ADD imperfections:<br><br><strong>"tiny hairline scratches, faint dust, natural fingerprints, microscopic edge wear"</strong><br><br>Perfect surfaces look fake.</div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">"Platinum" alone may become white plastic or generic silver. Use:<br><br><strong>"cool white precious metal, dense platinum, satin metallic sheen, sharp machined bevels, subtle grey reflections"</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Crystal</span><button class="copy-btn" data-copy="A physical four-point diamond logo carved from translucent platinum-tinted crystal. Real mineral body, cloudy internal inclusions, micro-fractures along edges, polished beveled facets, faint blue-grey refraction, caustics on the black surface below, no glow, no hologram.">Copy</button></div>
+          <div class="prompt-body">A physical four-point diamond logo carved from translucent platinum-tinted crystal. Real mineral body, cloudy internal inclusions, micro-fractures along edges, polished beveled facets, faint blue-grey refraction, caustics on the black surface below, no glow, no hologram.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Brushed platinum</span><button class="copy-btn" data-copy="A close-up of a brushed platinum business card. Satin cool-white metal, fine horizontal grain, laser-etched black typography, beveled edges, tiny hairline scratches, soft studio reflection, realistic weight and thickness, luxury watch-material finish.">Copy</button></div>
+          <div class="prompt-body">A close-up of a brushed platinum business card. Satin cool-white metal, fine horizontal grain, laser-etched black typography, beveled edges, tiny hairline scratches, soft studio reflection, realistic weight and thickness, luxury watch-material finish.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Technical fabric</span><button class="copy-btn" data-copy="Macro product photograph of a black technical-fabric robot jacket. Visible woven fibers, matte ballistic nylon, reinforced seams, subtle dust, realistic folds around the shoulder joint, cool studio light, premium industrial design.">Copy</button></div>
+          <div class="prompt-body">Macro product photograph of a black technical-fabric robot jacket. Visible woven fibers, matte ballistic nylon, reinforced seams, subtle dust, realistic folds around the shoulder joint, cool studio light, premium industrial design.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 06 ======================= -->
+      <section class="section" id="s06">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=820&q=80&auto=format&fit=crop" alt="3D robot mecha render">
+        </div>
+        <div class="section-header">
+          <div class="section-num">06</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">For your robotics division</div>
+            <h2 class="section-title">🤖 3D render + robots / mecha</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">For 3D and robots, use <strong>hard-surface language, plausible engineering, and material layering.</strong> Functional engineering beats glowing magic every time.</div>
+        </div>
+
+        <h2>🆚 The crystal head trap — what you'll get vs what you want</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ The single difference: skull VOLUME vs flat MASK</div>
+          <div class="concept-row">
+            <div class="concept-card bad">
+              <div class="concept-tag">❌ FLAT MASK / HELMET</div>
+              <svg class="concept-visual" viewBox="0 0 120 90">
+                <!-- Generic robot body -->
+                <rect x="48" y="55" width="24" height="25" fill="#3A3D47" rx="2"/>
+                <!-- Flat diamond stuck on like a mask -->
+                <path d="M60 20 L72 40 L60 60 L48 40 Z" fill="#7B73C8" opacity="0.4" stroke="#B8BDC8" stroke-width="1"/>
+                <!-- Visor line suggesting it's a mask -->
+                <line x1="48" y1="40" x2="72" y2="40" stroke="#B8BDC8" stroke-width="0.5" stroke-dasharray="2 2"/>
+                <text x="60" y="78" font-size="6" fill="#C25450" text-anchor="middle" font-family="Inter" font-weight="700">←HELMET</text>
+              </svg>
+              <div class="concept-text"><strong>"Robot with diamond head"</strong> → gets you a helmet or visor with logo stuck on front. Flat. Reads cheap.</div>
+            </div>
+            <div class="concept-card good">
+              <div class="concept-tag">✓ SKULL VOLUME</div>
+              <svg class="concept-visual" viewBox="0 0 120 90">
+                <!-- Robot body -->
+                <rect x="48" y="55" width="24" height="25" fill="#3A3D47" rx="2"/>
+                <!-- Full 3D crystal diamond as actual head -->
+                <defs>
+                  <linearGradient id="crystal-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" stop-color="#B8BDC8" stop-opacity="0.5"/>
+                    <stop offset="50%" stop-color="#7B73C8" stop-opacity="0.6"/>
+                    <stop offset="100%" stop-color="#4a4485" stop-opacity="0.5"/>
+                  </linearGradient>
+                </defs>
+                <!-- 3D diamond head with depth -->
+                <path d="M60 10 L78 35 L60 55 L42 35 Z" fill="url(#crystal-grad)" stroke="#B8BDC8" stroke-width="1"/>
+                <!-- Inner facet lines suggesting volume -->
+                <path d="M60 10 L60 55 M42 35 L78 35" stroke="#FFFFFF" stroke-width="0.3" opacity="0.6"/>
+                <path d="M60 10 L51 22 L42 35 M60 10 L69 22 L78 35 M42 35 L51 48 L60 55 M78 35 L69 48 L60 55" stroke="#FFFFFF" stroke-width="0.25" opacity="0.4"/>
+                <!-- Inside detail (sensors visible through crystal) -->
+                <circle cx="55" cy="32" r="1.2" fill="#6AA8FF" opacity="0.8"/>
+                <circle cx="65" cy="32" r="1.2" fill="#6AA8FF" opacity="0.8"/>
+                <circle cx="60" cy="40" r="2" fill="#FFFFFF" opacity="0.7"/>
+                <text x="60" y="78" font-size="6" fill="#5A8B6B" text-anchor="middle" font-family="Inter" font-weight="700">HEAD = LOGO</text>
+              </svg>
+              <div class="concept-text"><strong>"The head IS the diamond, full human-scale skull volume, no face, no visor"</strong> → you get the real concept.</div>
+            </div>
+          </div>
+          <div class="diagram-caption">Magic words: <em>"full human-head scale, solid skull volume, not a flat mask, not a thin logo plate, no face, no visor, the entire head silhouette IS the diamond geometry"</em></div>
+        </div>
+
+        <h2>Render engine triggers</h2>
+        <div class="vocab-group">
+          <div class="chips"><span class="chip">Cinema 4D Octane</span><span class="chip">Blender Cycles</span><span class="chip">Unreal Engine 5</span><span class="chip">KeyShot</span><span class="chip">V-Ray</span><span class="chip">ZBrush sculpt</span><span class="chip">Substance Painter</span></div>
+        </div>
+
+        <h2>Hard-surface vocabulary</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Hard-surface block · copy &amp; mix</span>
+            <button class="copy-btn" data-copy="beveled panels · chamfered edges · panel gaps · recessed screws · machined seams · layered armor plates · gasket lines · hydraulic pistons · servo joints · ball sockets · exposed actuators · cable routing · carbon fiber · anodized titanium">Copy</button>
+          </div>
+          <pre>beveled panels · chamfered edges · panel gaps
+recessed screws · machined seams · layered armor plates
+gasket lines · hydraulic pistons · servo joints
+ball sockets · exposed actuators · cable routing
+carbon fiber · anodized titanium</pre>
+        </div>
+
+        <h2>Sci-fi vs. realistic — which words pull which</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>❌ Cheap sci-fi</th><th>✓ Grounded realistic</th></tr></thead>
+            <tbody>
+              <tr><td>glowing reactor core</td><td class="wide">compact heat sink and status LEDs</td></tr>
+              <tr><td>energy armor</td><td class="wide">layered ceramic-composite plating</td></tr>
+              <tr><td>magic blue lines</td><td class="wide">fiber-optic data channels</td></tr>
+              <tr><td>giant spikes</td><td class="wide">functional protective housings</td></tr>
+              <tr><td>impossible joints</td><td class="wide">mechanical hinges and actuators</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Skull volume</div>
+          <div class="callout-body">For robotic heads, specify <strong>skull volume</strong>:<br><br><em>"full human-head scale, solid skull volume, not a flat mask, not a thin logo plate"</em><br><br>Critical for your crystal head concept — prevents flat logo-sticker results.</div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake · The crystal head trap</div>
+          <div class="callout-body">Beginners ask for "robot with diamond head" and get a helmet, visor, or superhero. State:<br><br><strong>"no face, no eyes, no visor, the entire head silhouette IS the diamond geometry"</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · AI company robot</span><button class="copy-btn" data-copy="A photorealistic robotic entity for a premium AI company. The head is a full human-scale four-point diamond crystal skull, not a flat logo, with solid volume and beveled facets. Semi-transparent platinum mineral shell reveals optical sensors, mechanical brain layers, cooling channels, and a central white-blue processing core inside. Dark matte humanoid body, realistic neck mechanics, Cinema 4D Octane render, black void background, hard key light upper left.">Copy</button></div>
+          <div class="prompt-body">A photorealistic robotic entity for a premium AI company. The head is a full human-scale four-point diamond crystal skull, not a flat logo, with solid volume and beveled facets. Semi-transparent platinum mineral shell reveals optical sensors, mechanical brain layers, cooling channels, and a central white-blue processing core inside. Dark matte humanoid body, realistic neck mechanics, Cinema 4D Octane render, black void background, hard key light upper left.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Realistic mecha joint</span><button class="copy-btn" data-copy="Close-up technical render of a humanoid robot shoulder joint. Layered titanium plates, exposed hydraulic pistons, rubber gaskets, braided cable routing, tiny screws, realistic oil staining in crevices, worn edges, functional engineering, KeyShot-style industrial product render, neutral grey studio background.">Copy</button></div>
+          <div class="prompt-body">Close-up technical render of a humanoid robot shoulder joint. Layered titanium plates, exposed hydraulic pistons, rubber gaskets, braided cable routing, tiny screws, realistic oil staining in crevices, worn edges, functional engineering, KeyShot-style industrial product render, neutral grey studio background.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Engraved panel</span><button class="copy-btn" data-copy='Macro render of a black anodized robot chest panel with "PLATINUM AI" CNC-engraved into the metal. Recessed V-cut grooves, polished bevel highlights, dust settled inside the engraving, subtle edge wear, cool rim light, ultra-realistic PBR material.'>Copy</button></div>
+          <div class="prompt-body">Macro render of a black anodized robot chest panel with "PLATINUM AI" CNC-engraved into the metal. Recessed V-cut grooves, polished bevel highlights, dust settled inside the engraving, subtle edge wear, cool rim light, ultra-realistic PBR material.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 07 ======================= -->
+      <section class="section" id="s07">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=820&q=80&auto=format&fit=crop" alt="Product photography on dark background">
+        </div>
+        <div class="section-header">
+          <div class="section-num">07</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Hero shots &amp; campaigns</div>
+            <h2 class="section-title">📦 Product photography</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body"><strong>Object + surface + lighting + reflections + scale + commercial intent.</strong> Luxury usually means FEWER effects, better light, better material.</div>
+        </div>
+
+        <h2>Studio setup vocabulary</h2>
+        <div class="vocab-group">
+          <div class="chips"><span class="chip">seamless background</span><span class="chip">cyc wall</span><span class="chip">acrylic surface</span><span class="chip">black glass</span><span class="chip">marble plinth</span><span class="chip">softbox reflection</span><span class="chip">bounce card</span><span class="chip">negative fill</span><span class="chip">contact shadow</span><span class="chip">floating hero shot</span><span class="chip">packshot</span></div>
+        </div>
+
+        <h2>E-commerce vs. editorial</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>E-commerce</th><th>Editorial</th></tr></thead>
+            <tbody>
+              <tr><td>Plain white background</td><td class="wide">Stylized set</td></tr>
+              <tr><td>Accurate product</td><td class="wide">Emotional mood</td></tr>
+              <tr><td>Even lighting</td><td class="wide">Dramatic lighting</td></tr>
+              <tr><td>Centered packshot</td><td class="wide">Art-directed composition</td></tr>
+              <tr><td>Label legibility</td><td class="wide">Storytelling</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Luxury triggers</h2>
+        <div class="vocab-group">
+          <div class="chips"><span class="chip">quiet luxury</span><span class="chip">restrained</span><span class="chip">museum-like</span><span class="chip">jewelry campaign</span><span class="chip">luxury watch photography</span><span class="chip">precision-machined</span><span class="chip">expensive restraint</span></div>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Label integrity</div>
+          <div class="callout-body">For product text/labels:<br><br><strong>"preserve label geometry and exact text; do not hallucinate extra symbols"</strong></div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">Asking for "luxury" AND "lots of effects." <strong>Luxury means fewer effects, better light, better material.</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Logo hero shot</span><button class="copy-btn" data-copy="Luxury product hero shot of a platinum crystal AI logo standing upright on black glass. Centered symmetrical composition, subtle reflection beneath, large softbox reflection across facets, thin rim light outlining edges, matte black background sweep, 85mm lens, f/5.6, premium technology brand campaign, no extra objects.">Copy</button></div>
+          <div class="prompt-body">Luxury product hero shot of a platinum crystal AI logo standing upright on black glass. Centered symmetrical composition, subtle reflection beneath, large softbox reflection across facets, thin rim light outlining edges, matte black background sweep, 85mm lens, f/5.6, premium technology brand campaign, no extra objects.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Packaging</span><button class="copy-btn" data-copy='Premium skincare bottle packaging mockup on warm travertine stone. Frosted glass bottle, satin platinum cap, label text "PLATINUM" rendered once, clean modern sans-serif, soft morning window light, realistic contact shadows, editorial still life, beige-on-black luxury palette.'>Copy</button></div>
+          <div class="prompt-body">Premium skincare bottle packaging mockup on warm travertine stone. Frosted glass bottle, satin platinum cap, label text "PLATINUM" rendered once, clean modern sans-serif, soft morning window light, realistic contact shadows, editorial still life, beige-on-black luxury palette.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Engraved card</span><button class="copy-btn" data-copy='Close-up product photo of a matte black metal business card with "PLATINUM AI" deeply debossed into the surface. Satin platinum exposed inside the recessed letters, beveled grooves, soft raking light, shallow depth of field, realistic dust and fingerprints, quiet luxury.'>Copy</button></div>
+          <div class="prompt-body">Close-up product photo of a matte black metal business card with "PLATINUM AI" deeply debossed into the surface. Satin platinum exposed inside the recessed letters, beveled grooves, soft raking light, shallow depth of field, realistic dust and fingerprints, quiet luxury.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 08 ======================= -->
+      <section class="section" id="s08">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1524666643752-b381eb00effb?w=820&q=80&auto=format&fit=crop" alt="Brand typography design layout">
+        </div>
+        <div class="section-header">
+          <div class="section-num">08</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Exact text rendering</div>
+            <h2 class="section-title">🔤 Brand, logo &amp; typography</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Put <strong>exact text in quotes.</strong> Ask for verbatim rendering. Specify placement and font style. Short text (1–3 words) renders better than long.</div>
+        </div>
+
+        <h2>Text rendering structure</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Text rendering template</span>
+            <button class="copy-btn" data-copy='Text to render EXACTLY:
+"PLATINUM AI"
+
+Render this text once.
+No extra characters.
+No misspellings.
+No additional text.
+Typography: [font style]
+Placement: [where]
+Material: [printed / engraved / raised / neon / embossed]'>Copy</button>
+          </div>
+          <pre>Text to render EXACTLY:
+"PLATINUM AI"
+
+Render this text once.
+No extra characters.
+No misspellings.
+No additional text.
+Typography: [font style]
+Placement: [where]
+Material: [printed / engraved / raised / neon / embossed]</pre>
+        </div>
+
+        <h2>Font style triggers</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Desired look</th><th>Prompt phrase</th></tr></thead>
+            <tbody>
+              <tr><td>Futuristic tech</td><td class="wide">Extended geometric sans, Eurostile-like, squared bowls</td></tr>
+              <tr><td>Luxury fashion</td><td class="wide">Elegant high-contrast serif</td></tr>
+              <tr><td>Minimal SaaS</td><td class="wide">Clean modern sans-serif, Inter-like</td></tr>
+              <tr><td>Industrial</td><td class="wide">Condensed grotesk, DIN-like</td></tr>
+              <tr><td>Editorial</td><td class="wide">Refined magazine typography</td></tr>
+              <tr><td>Art Deco</td><td class="wide">Geometric stepped letterforms</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Engraved / embossed text language</h2>
+        <div class="vocab-group">
+          <div class="chips"><span class="chip">engraved</span><span class="chip">debossed</span><span class="chip">embossed</span><span class="chip">incised</span><span class="chip">carved</span><span class="chip">relief</span><span class="chip">foil-stamped</span><span class="chip">blind deboss</span><span class="chip">enamel-filled engraving</span></div>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Describe letter anatomy</div>
+          <div class="callout-body">Asking for "same font" without describing it = model guesses. Instead:<br><br><strong>"wide extended geometric sans, monoline strokes, squared bowls, flat-top A, angular R leg, extra-wide T bar"</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Logo generation</span><button class="copy-btn" data-copy='Create an original logo for "PLATINUM AI," a premium AI automation company. Symbol: four-point geometric diamond, sharp faceted geometry, intelligent but minimal. Typography: wide extended futuristic sans-serif, monoline strokes, squared bowls, generous tracking. Color: platinum silver on matte black. Single centered logo, vector-like clarity, scalable, no gradients, no extra symbols.'>Copy</button></div>
+          <div class="prompt-body">Create an original logo for "PLATINUM AI," a premium AI automation company. Symbol: four-point geometric diamond, sharp faceted geometry, intelligent but minimal. Typography: wide extended futuristic sans-serif, monoline strokes, squared bowls, generous tracking. Color: platinum silver on matte black. Single centered logo, vector-like clarity, scalable, no gradients, no extra symbols.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Exact typography</span><button class="copy-btn" data-copy='Create a premium black poster with the exact text "PLATINUM AI" centered. Render the words once only, no extra text. Typography: extended futuristic geometric sans, thin monoline strokes, squared bowls, flat-top A, angular R leg, wide tracking. Finish: satin platinum ink on matte black.'>Copy</button></div>
+          <div class="prompt-body">Create a premium black poster with the exact text "PLATINUM AI" centered. Render the words once only, no extra text. Typography: extended futuristic geometric sans, thin monoline strokes, squared bowls, flat-top A, angular R leg, wide tracking. Finish: satin platinum ink on matte black.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Engraved wall</span><button class="copy-btn" data-copy='A matte black onyx wall with "PLATINUM AI" carved outward as raised platinum letters, not printed. The letters are extruded from the wall surface with beveled edges, chrome-platinum reflections, subtle shadows underneath each raised stroke, luxury watch-plate precision, centered composition.'>Copy</button></div>
+          <div class="prompt-body">A matte black onyx wall with "PLATINUM AI" carved outward as raised platinum letters, not printed. The letters are extruded from the wall surface with beveled edges, chrome-platinum reflections, subtle shadows underneath each raised stroke, luxury watch-plate precision, centered composition.</div>
+        </div>
+      </section>
+
+      <!-- ======================= BIG QUOTE BREAK ======================= -->
+      <div class="bigquote">
+        <p class="bigquote-text">You're halfway. The next sections separate <em>beginner</em> from <em>senior art director.</em></p>
+      </div>
+
+      <!-- ======================= SECTION 09 ======================= -->
+      <section class="section" id="s09">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1547891654-e66ed7ebb968?w=820&q=80&auto=format&fit=crop" alt="Color palette aesthetic art styles">
+        </div>
+        <div class="section-header">
+          <div class="section-num">09</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Pick deliberately</div>
+            <h2 class="section-title">🎨 Style &amp; aesthetic clusters</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Aesthetic words pull entire visual worlds. <strong>Pick ONE primary style + ONE secondary influence.</strong> Mixing 10 aesthetics produces mush.</div>
+        </div>
+
+        <h2>🌈 Style mood swatches — see the worlds each word pulls</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ One word = an entire color/light/feel cluster</div>
+          <div class="mood-grid">
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #1a1818, #3a2a20, #5a3a25, #1a1818);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Cinematic</div>
+                <div class="mood-desc">Deep shadows · warm rim · film grain</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #f5f0e8, #d8c8b0, #8a7058, #2a1f15);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Editorial</div>
+                <div class="mood-desc">Magazine tones · soft contrast</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #8a8580, #b8b0a0, #d8d0c0, #6a6560);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Documentary</div>
+                <div class="mood-desc">Overcast · honest · imperfect</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #0a0a0e, #1a1a22, #2a2a35, #b8bdc8);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Luxury</div>
+                <div class="mood-desc">Restrained · platinum · onyx</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #6a6058, #8a7868, #a89888, #4a4038);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Brutalist</div>
+                <div class="mood-desc">Concrete · raw · heavy</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #c9a961, #1a1818, #c25450, #f5e5b5);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Art Deco</div>
+                <div class="mood-desc">Gold · black · stepped geometry</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #0a0518, #2a0a3a, #c25450, #6a1855);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Cyberpunk</div>
+                <div class="mood-desc">Neon · rain · high contrast</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #c0d5b8, #f5e8c8, #8aa078, #e5d8b8);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Solarpunk</div>
+                <div class="mood-desc">Greenery · warm future · light</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #e8e4d8, #d0cabb, #f5f0e5, #b0a898);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Scandinavian</div>
+                <div class="mood-desc">Minimal · pale · natural wood</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #2a1a18, #c0a8a0, #8a6858, #f5ede5);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Japanese</div>
+                <div class="mood-desc">Negative space · clay tones</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #ffffff, #c2451f, #1a1a1a, #f5f5f5);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Swiss</div>
+                <div class="mood-desc">Grid · clean type · rational</div>
+              </div>
+            </div>
+            <div class="mood-card">
+              <div class="mood-swatch" style="background: linear-gradient(135deg, #c8b8d8, #b8c8e0, #e0e0f0, #a890c0);"></div>
+              <div class="mood-info">
+                <div class="mood-name">Y2K</div>
+                <div class="mood-desc">Chrome · iridescent · glossy</div>
+              </div>
+            </div>
+          </div>
+          <div class="diagram-caption">When you say "cinematic" you're pulling that warm/dark/rim-lit world. When you say "editorial" you're pulling magazine softness. Pick one.</div>
+        </div>
+
+        <h2>Style vocabulary — what each pulls</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Word</th><th>Typical result</th></tr></thead>
+            <tbody>
+              <tr><td>Cinematic</td><td class="wide">Dramatic light, shallow depth, movie still</td></tr>
+              <tr><td>Editorial</td><td class="wide">Magazine composition, styled but tasteful</td></tr>
+              <tr><td>Documentary</td><td class="wide">Real, imperfect, unposed</td></tr>
+              <tr><td>Candid</td><td class="wide">Spontaneous moment</td></tr>
+              <tr><td>Commercial</td><td class="wide">Polished ad-ready image</td></tr>
+              <tr><td>Luxury</td><td class="wide">Restrained, premium materials, controlled light</td></tr>
+              <tr><td>Brutalist</td><td class="wide">Concrete, heavy geometry, raw forms</td></tr>
+              <tr><td>Bauhaus</td><td class="wide">Geometric, primary colors, clean layout</td></tr>
+              <tr><td>Art Deco</td><td class="wide">Gold, symmetry, ornament, stepped geometry</td></tr>
+              <tr><td>Y2K</td><td class="wide">Chrome, glossy plastic, early digital</td></tr>
+              <tr><td>Cyberpunk</td><td class="wide">Neon, rain, dense city, high contrast</td></tr>
+              <tr><td>Solarpunk</td><td class="wide">Greenery, warm future, sustainable tech</td></tr>
+              <tr><td>Scandinavian</td><td class="wide">Minimal, natural materials, calm</td></tr>
+              <tr><td>Japanese minimalism</td><td class="wide">Restrained, negative space, natural textures</td></tr>
+              <tr><td>Swiss design</td><td class="wide">Grid, clean typography, rational hierarchy</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Descriptive equivalents (better than naming brands)</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Instead of</th><th>Use</th></tr></thead>
+            <tbody>
+              <tr><td>"Vogue"</td><td class="wide">High-fashion editorial magazine photography</td></tr>
+              <tr><td>"WIRED"</td><td class="wide">Sharp technology editorial cover design</td></tr>
+              <tr><td>"National Geographic"</td><td class="wide">Natural documentary wildlife photography</td></tr>
+              <tr><td>"Apple ad"</td><td class="wide">Minimal premium tech product photography</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Quality phrases that actually work</div>
+          <div class="callout-body"><strong>Use these:</strong><br>production-ready · commercial photography · realistic contact shadows · physically plausible lighting · unretouched documentary texture · clean typographic hierarchy · material-accurate reflections<br><br><strong>Skip these (mostly fluff):</strong><br>8K · ultra · best · masterpiece · insane quality · award-winning (alone)</div>
+        </div>
+
+        <div class="callout callout-warn">
+          <div class="callout-label">▲ Common mistake</div>
+          <div class="callout-body">Mixing 10 aesthetics: <em>"cyberpunk Bauhaus Vogue National Geographic anime cinematic luxury brutalist"</em> = mush.<br><br><strong>One primary, one secondary. That's it.</strong></div>
+        </div>
+
+        <h2>Example prompts</h2>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 1 · Luxury tech</span><button class="copy-btn" data-copy="A quiet luxury technology campaign image for PLATINUM AI. Matte black background, platinum geometric diamond mark, restrained composition, high-end product photography, softbox reflections, subtle contact shadow, no neon, no clutter, premium intelligence mood.">Copy</button></div>
+          <div class="prompt-body">A quiet luxury technology campaign image for PLATINUM AI. Matte black background, platinum geometric diamond mark, restrained composition, high-end product photography, softbox reflections, subtle contact shadow, no neon, no clutter, premium intelligence mood.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 2 · Documentary realism</span><button class="copy-btn" data-copy="A documentary-style photo of engineers assembling a humanoid robot in a real workshop. Overcast daylight through factory windows, imperfect tools, dust, fingerprints on metal panels, natural poses, 35mm lens, unpolished realism, no cinematic exaggeration.">Copy</button></div>
+          <div class="prompt-body">A documentary-style photo of engineers assembling a humanoid robot in a real workshop. Overcast daylight through factory windows, imperfect tools, dust, fingerprints on metal panels, natural poses, 35mm lens, unpolished realism, no cinematic exaggeration.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>Prompt 3 · Art Deco engraving</span><button class="copy-btn" data-copy='An Art Deco black-and-platinum invitation card with "PLATINUM AI" engraved into metallic foil. Symmetrical geometric border, stepped sunburst details, recessed letter grooves, satin platinum highlights, macro luxury stationery photography.'>Copy</button></div>
+          <div class="prompt-body">An Art Deco black-and-platinum invitation card with "PLATINUM AI" engraved into metallic foil. Symmetrical geometric border, stepped sunburst details, recessed letter grooves, satin platinum highlights, macro luxury stationery photography.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 10 ======================= -->
+      <section class="section" id="s10">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1518709268805-4e9042af9f23?w=820&q=80&auto=format&fit=crop" alt="Hidden tricks mystery dark background">
+        </div>
+        <div class="section-header">
+          <div class="section-num">10</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">What pros do that beginners don't</div>
+            <h2 class="section-title">🔓 Hidden tricks</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Not secrets. Reliable professional patterns most beginners never learn.</div>
+        </div>
+
+        <ul class="kv-list">
+          <li><span class="kv-num">1</span><div><span class="kv-title">Prompt like a production brief</span><span class="kv-desc">Include: Use case · Audience · Composition · Material · Lighting · Camera · Constraints.</span></div></li>
+          <li><span class="kv-num">2</span><div><span class="kv-title">Use 'lock / change' language</span><span class="kv-desc">Change only: X. Preserve: face, pose, lighting, background, camera angle, skin tone.</span></div></li>
+          <li><span class="kv-num">3</span><div><span class="kv-title">For realism, remove 'AI sheen'</span><span class="kv-desc">Add: natural imperfections, scratches, dust, fingerprints, pores, fabric lint, real-world wear.</span></div></li>
+          <li><span class="kv-num">4</span><div><span class="kv-title">For luxury, reduce chaos</span><span class="kv-desc">Add: restrained, quiet, minimal, controlled reflections, negative space, no decorative effects.</span></div></li>
+          <li><span class="kv-num">5</span><div><span class="kv-title">For exact composition, use spatial anchors</span><span class="kv-desc">Subject centered · logo 40% of frame height · text below · service line at bottom.</span></div></li>
+          <li><span class="kv-num">6</span><div><span class="kv-title">For text, quote exact copy</span><span class="kv-desc">Text EXACTLY: "PLATINUM AI" · Render once · No extra words.</span></div></li>
+          <li><span class="kv-num">7</span><div><span class="kv-title">Index reference images</span><span class="kv-desc">Image 1 = shape · Image 2 = material · Image 3 = lighting · Apply 2's material + 3's lighting to 1's geometry.</span></div></li>
+        </ul>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Bonus trick · Positive framing</div>
+          <div class="callout-body">Instead of <em>"no extra fingers"</em> → <strong>"anatomically correct five-fingered hands, natural finger spacing"</strong><br>Instead of <em>"no warped face"</em> → <strong>"symmetric facial anatomy, natural proportions"</strong><br>Instead of <em>"no AI artifacts"</em> → <strong>"clean detail, no rendering errors, sharp consistent edges"</strong></div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 11 ======================= -->
+      <section class="section" id="s11">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1553484771-cc0d9b8c2b33?w=820&q=80&auto=format&fit=crop" alt="Negative space contrast composition">
+        </div>
+        <div class="section-header">
+          <div class="section-num">11</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Without saying 'no'</div>
+            <h2 class="section-title">🚫 Negative prompting</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Direct negatives sometimes work — but <strong>positive constraints are stronger.</strong> Use 'only' and 'preserve' more than 'don't.'</div>
+        </div>
+
+        <h2>Positive exclusion patterns</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>❌ Bad negative</th><th>✓ Better positive</th></tr></thead>
+            <tbody>
+              <tr><td>No blur</td><td class="wide">Sharp focus on subject</td></tr>
+              <tr><td>No extra text</td><td class="wide">Render only this exact text once</td></tr>
+              <tr><td>No bad hands</td><td class="wide">Anatomically natural hands, five fingers</td></tr>
+              <tr><td>No plastic skin</td><td class="wide">Natural pores and unretouched skin texture</td></tr>
+              <tr><td>No glow</td><td class="wide">Matte physical material with realistic reflections</td></tr>
+              <tr><td>No background changes</td><td class="wide">Preserve original background exactly</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>The lock list pattern (use for ALL edits)</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">The universal edit template</span>
+            <button class="copy-btn" data-copy="PRESERVE EXACTLY:
+- subject identity
+- face
+- pose
+- camera angle
+- lighting direction
+- background
+- clothing
+- image crop
+
+CHANGE ONLY:
+- the word on the surface">Copy</button>
+          </div>
+          <pre>PRESERVE EXACTLY:
+- subject identity
+- face
+- pose
+- camera angle
+- lighting direction
+- background
+- clothing
+- image crop
+
+CHANGE ONLY:
+- the word on the surface</pre>
+        </div>
+
+        <div class="callout callout-trick">
+          <div class="callout-label">◆ Hidden trick · Preventing drift</div>
+          <div class="callout-body">Repeat the critical object identity:<br><br><strong>"The head remains the same four-point diamond logo geometry. Do not convert it into a helmet, face, mask, visor, or ordinary robot head."</strong></div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 12 ======================= -->
+      <section class="section" id="s12">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?w=820&q=80&auto=format&fit=crop" alt="Iteration workflow process">
+        </div>
+        <div class="section-header">
+          <div class="section-num">12</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">The pro workflow</div>
+            <h2 class="section-title">🔄 Iteration &amp; editing protocols</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body"><strong>One change per iteration.</strong> Always include a preserve list. Multiple changes per turn = drift in everything good.</div>
+        </div>
+
+        <h2>Best edit format</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Universal edit format</span>
+            <button class="copy-btn" data-copy="TASK:
+Change [specific element].
+
+PRESERVE:
+- item 1
+- item 2
+- item 3
+
+CHANGE ONLY:
+- item 1
+
+MATERIAL / LIGHTING:
+[details]
+
+QUALITY CHECK:
+The result should look physically real, not pasted on.">Copy</button>
+          </div>
+          <pre>TASK:
+Change [specific element].
+
+PRESERVE:
+- item 1
+- item 2
+- item 3
+
+CHANGE ONLY:
+- item 1
+
+MATERIAL / LIGHTING:
+[details]
+
+QUALITY CHECK:
+The result should look physically real, not pasted on.</pre>
+        </div>
+
+        <h2>Refinement sequence (do in this order)</h2>
+        <ul class="kv-list">
+          <li><span class="kv-num">1</span><div><span class="kv-title">Get composition right</span><span class="kv-desc">Then lock composition.</span></div></li>
+          <li><span class="kv-num">2</span><div><span class="kv-title">Fix material</span><span class="kv-desc">Then lock material.</span></div></li>
+          <li><span class="kv-num">3</span><div><span class="kv-title">Fix lighting</span><span class="kv-desc">Then lock lighting.</span></div></li>
+          <li><span class="kv-num">4</span><div><span class="kv-title">Fix text</span><span class="kv-desc">Then finalize / upscale.</span></div></li>
+        </ul>
+
+        <h2>When to iterate vs. start fresh</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>✓ Iterate when</th><th>✗ Start fresh when</th></tr></thead>
+            <tbody>
+              <tr><td>Composition is good</td><td class="wide">Wrong subject</td></tr>
+              <tr><td>Subject is good</td><td class="wide">Wrong geometry</td></tr>
+              <tr><td>Lighting is close</td><td class="wide">Wrong style cluster</td></tr>
+              <tr><td>Only 1–2 details wrong</td><td class="wide">Wrong camera angle</td></tr>
+              <tr><td>—</td><td class="wide">Model invented too many elements</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 13 ======================= -->
+      <section class="section" id="s13">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1493863641943-9b68992a8d07?w=820&q=80&auto=format&fit=crop" alt="Photo gallery reference images wall">
+        </div>
+        <div class="section-header">
+          <div class="section-num">13</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Multi-image role assignment</div>
+            <h2 class="section-title">🖼️ Reference image handling</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">References are powerful, but you MUST <strong>assign roles to each image.</strong> Otherwise the model blends them randomly.</div>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Reference role structure</span>
+            <button class="copy-btn" data-copy="Image 1: shape reference
+Image 2: material reference
+Image 3: lighting reference
+Image 4: typography reference
+
+Use Image 1 for geometry only.
+Use Image 2 for material only.
+Use Image 3 for lighting only.
+Do not copy unrelated elements.">Copy</button>
+          </div>
+          <pre>Image 1: shape reference
+Image 2: material reference
+Image 3: lighting reference
+Image 4: typography reference
+
+Use Image 1 for geometry only.
+Use Image 2 for material only.
+Use Image 3 for lighting only.
+Do not copy unrelated elements.</pre>
+        </div>
+
+        <h2>What references can guide</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Reference type</th><th>Best use</th></tr></thead>
+            <tbody>
+              <tr><td>Logo</td><td class="wide">Exact shape, proportions</td></tr>
+              <tr><td>Product</td><td class="wide">Label, geometry, material</td></tr>
+              <tr><td>Person</td><td class="wide">Identity, pose, expression</td></tr>
+              <tr><td>Interior</td><td class="wide">Layout, furniture, camera angle</td></tr>
+              <tr><td>Style image</td><td class="wide">Palette, lighting, texture</td></tr>
+              <tr><td>Typography</td><td class="wide">Letter anatomy, spacing</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 14 ======================= -->
+      <section class="section" id="s14">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1478720568477-152d9b5bb43a?w=820&q=80&auto=format&fit=crop" alt="Cinema widescreen aspect ratio film">
+        </div>
+        <div class="section-header">
+          <div class="section-num">14</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Output for use case</div>
+            <h2 class="section-title">📐 Aspect ratio &amp; resolution</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Design for the final crop. <strong>Start with the final ratio</strong> — don't generate square then try to turn it into a banner.</div>
+        </div>
+
+        <h2>📏 See every aspect ratio to scale</h2>
+
+        <div class="diagram">
+          <div class="diagram-label">◆ Visual reference · same scale · pick before generating</div>
+          <div class="aspect-grid">
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 80px; height: 80px;"></div>
+              <div class="aspect-name">1:1</div>
+              <div class="aspect-use">Logo · product hero · social post</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 70px; height: 88px;"></div>
+              <div class="aspect-name">4:5</div>
+              <div class="aspect-use">Instagram portrait · fashion ads</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 66px; height: 88px;"></div>
+              <div class="aspect-name">3:4</div>
+              <div class="aspect-use">Portrait · editorial · character</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 58px; height: 88px;"></div>
+              <div class="aspect-name">2:3</div>
+              <div class="aspect-use">Posters · full-body fashion</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 50px; height: 88px;"></div>
+              <div class="aspect-name">9:16</div>
+              <div class="aspect-use">Reels · TikTok · wallpaper</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 100px; height: 56px;"></div>
+              <div class="aspect-name">16:9</div>
+              <div class="aspect-use">Website hero · YouTube</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 120px; height: 52px;"></div>
+              <div class="aspect-name">21:9</div>
+              <div class="aspect-use">Ultra-cinematic banner</div>
+            </div>
+            <div class="aspect-card">
+              <div class="aspect-box" style="width: 132px; height: 44px;"></div>
+              <div class="aspect-name">3:1</div>
+              <div class="aspect-use">Website header · panoramic</div>
+            </div>
+          </div>
+          <div class="diagram-caption">Tall = portrait/mobile · Square = social · Wide = banner/cinematic. Always state the ratio in your prompt.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 15 ======================= -->
+      <section class="section" id="s15">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1518770660439-4636190af475?w=820&q=80&auto=format&fit=crop" alt="Glitch error failure circuit board">
+        </div>
+        <div class="section-header">
+          <div class="section-num">15</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">How to fix the AI look</div>
+            <h2 class="section-title">⚠️ Common failure modes</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">When images look bad, it's almost always one of these 10 mistakes. <strong>Diagnose first → fix specifically.</strong></div>
+        </div>
+
+        <h2>Top 10 beginner mistakes</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Mistake</th><th>Fix</th></tr></thead>
+            <tbody>
+              <tr><td>Too vague</td><td class="wide">Specify subject, camera, light, material</td></tr>
+              <tr><td>Too many styles</td><td class="wide">Use primary + secondary only</td></tr>
+              <tr><td>No preservation list</td><td class="wide">Lock exact elements</td></tr>
+              <tr><td>Text not quoted</td><td class="wide">Use exact quoted text</td></tr>
+              <tr><td>"Make better"</td><td class="wide">Define quality dimension</td></tr>
+              <tr><td>No material physics</td><td class="wide">Add roughness/reflection/texture</td></tr>
+              <tr><td>Wrong lens</td><td class="wide">Use focal length + crop</td></tr>
+              <tr><td>No lighting direction</td><td class="wide">Define key/fill/rim</td></tr>
+              <tr><td>Negative-only prompting</td><td class="wide">Positive final-state framing</td></tr>
+              <tr><td>Too many changes per edit</td><td class="wide">ONE major change per turn</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <h2>Why images look AI-generated</h2>
+        <div class="codeblock">
+          <div class="codeblock-header"><span class="codeblock-label">The AI tells</span></div>
+          <pre>✗ skin too smooth
+✗ materials too clean
+✗ lighting too perfect
+✗ hands lack anatomical constraints
+✗ background has meaningless detail
+✗ text lacks exact instruction
+✗ no camera/lens grounding
+✗ style words overpower realism</pre>
+        </div>
+
+        <h2>How to fix the AI look</h2>
+        <div class="codeblock">
+          <div class="codeblock-header"><span class="codeblock-label">The cure</span></div>
+          <pre>✓ real-world imperfections
+✓ natural asymmetry
+✓ visible micro texture
+✓ subtle dust/fingerprints
+✓ physically plausible shadows
+✓ unretouched documentary texture
+✓ clear camera model/lens</pre>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 16 ======================= -->
+      <section class="section" id="s16">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?w=820&q=80&auto=format&fit=crop" alt="Discovery hidden knowledge research">
+        </div>
+        <div class="section-header">
+          <div class="section-num">16</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">System thinking</div>
+            <h2 class="section-title">🧬 Things you didn't ask but need</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Senior prompters don't just write prompts — they build <strong>prompt systems.</strong> Brand bibles, prompt modules, diagnostic frameworks.</div>
+        </div>
+
+        <h2>Your PlatinumAI brand bible (reusable in every prompt)</h2>
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Reuse this block on every brand prompt</span>
+            <button class="copy-btn" data-copy="PLATINUM AI visual system:
+
+- Palette: matte black, platinum silver, cold blue-white
+- Materials: translucent platinum crystal, brushed platinum, matte onyx
+- Lighting: cold upper-left key, subtle rim light, controlled reflections
+- Geometry: sharp four-point diamond, faceted, engineered, precise
+- Mood: quiet luxury, geometric intelligence, premium AI infrastructure
+- Avoid: neon cyberpunk, crypto coin, generic robot face, cheap glow, clutter">Copy</button>
+          </div>
+          <pre>PLATINUM AI visual system:
+
+- Palette: matte black, platinum silver, cold blue-white
+- Materials: translucent platinum crystal, brushed platinum,
+  matte onyx
+- Lighting: cold upper-left key, subtle rim light,
+  controlled reflections
+- Geometry: sharp four-point diamond, faceted, engineered,
+  precise
+- Mood: quiet luxury, geometric intelligence, premium AI
+- Avoid: neon cyberpunk, crypto coin, generic robot face,
+  cheap glow, clutter</pre>
+        </div>
+
+        <h2>The 10 advanced moves</h2>
+        <ul class="kv-list">
+          <li><span class="kv-num">1</span><div><span class="kv-title">Build a brand visual Bible</span><span class="kv-desc">Reuse the block above on every prompt.</span></div></li>
+          <li><span class="kv-num">2</span><div><span class="kv-title">Create prompt modules</span><span class="kv-desc">Subject · Material · Lighting · Camera · Brand · Preservation.</span></div></li>
+          <li><span class="kv-num">3</span><div><span class="kv-title">Diagnostic prompting</span><span class="kv-desc">Ask: what failed — shape, material, lighting, text, realism?</span></div></li>
+          <li><span class="kv-num">4</span><div><span class="kv-title">Reference sheets</span><span class="kv-desc">Front · side · back · material · expression · scale.</span></div></li>
+          <li><span class="kv-num">5</span><div><span class="kv-title">Separate concept from production</span><span class="kv-desc">First: 6 explorations. Final: render selected as photo.</span></div></li>
+          <li><span class="kv-num">6</span><div><span class="kv-title">Campaign systems</span><span class="kv-desc">Same product · same light · same palette · different compositions.</span></div></li>
+          <li><span class="kv-num">7</span><div><span class="kv-title">Architecture constraints</span><span class="kv-desc">Load-bearing columns · realistic ceilings · believable scale.</span></div></li>
+          <li><span class="kv-num">8</span><div><span class="kv-title">Interiors as photos</span><span class="kv-desc">"Real estate editorial photograph" not "design concept."</span></div></li>
+          <li><span class="kv-num">9</span><div><span class="kv-title">Premium AI ≠ cheap sci-fi</span><span class="kv-desc">Aerospace · medical · watch machining · gallery lighting.</span></div></li>
+          <li><span class="kv-num">10</span><div><span class="kv-title">Avoid</span><span class="kv-desc">Neon circuits, glowing eyes, holograms, energy rings.</span></div></li>
+        </ul>
+      </section>
+
+      <!-- ======================= SECTION 17 — MASTER TEMPLATE ======================= -->
+      <section class="section" id="s17">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1581291518857-4e27b48ff24e?w=820&q=80&auto=format&fit=crop" alt="Master blueprint template planning">
+        </div>
+        <div class="section-header">
+          <div class="section-num">17</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">★ The one template to rule them all</div>
+            <h2 class="section-title">🎯 Master template</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">★ Fill this in for every image</div>
+          <div class="callout-body">After 20–30 uses, you'll think this way naturally. This template IS the framework.</div>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">The master fill-in template</span>
+            <button class="copy-btn" data-copy='Create [image type] of [specific subject].
+
+SUBJECT:
+[Describe object/person/scene clearly.]
+
+STYLE / MEDIUM:
+[Photorealistic photo, 3D render, editorial poster, product mockup, etc.]
+
+COMPOSITION:
+[Framing, placement, angle, crop, negative space.]
+
+CAMERA:
+[Lens, aperture, camera height, perspective.]
+
+LIGHTING:
+[Key/fill/rim, softness, direction, Kelvin, atmosphere.]
+
+MATERIALS:
+[Surface, roughness, reflection, texture, imperfections.]
+
+BRAND / MOOD:
+[Luxury, documentary, futuristic, quiet, brutalist, etc.]
+
+TEXT:
+Exact text: "[TEXT]"
+Render once only.
+No extra characters.
+Typography: [style]
+Material: [printed/engraved/raised/etc.]
+
+PRESERVE (if editing):
+- [locked element]
+- [locked element]
+
+CHANGE ONLY:
+- [specific change]
+
+QUALITY BAR:
+Physically plausible, realistic shadows, accurate scale, no generic AI gloss.'>Copy template</button>
+          </div>
+          <pre>Create [image type] of [specific subject].
+
+SUBJECT:
+[Describe object/person/scene clearly.]
+
+STYLE / MEDIUM:
+[Photorealistic photo, 3D render, editorial poster,
+ product mockup, etc.]
+
+COMPOSITION:
+[Framing, placement, angle, crop, negative space.]
+
+CAMERA:
+[Lens, aperture, camera height, perspective.]
+
+LIGHTING:
+[Key/fill/rim, softness, direction, Kelvin, atmosphere.]
+
+MATERIALS:
+[Surface, roughness, reflection, texture, imperfections.]
+
+BRAND / MOOD:
+[Luxury, documentary, futuristic, quiet, brutalist, etc.]
+
+TEXT:
+Exact text: "[TEXT]"
+Render once only.
+No extra characters.
+Typography: [style]
+Material: [printed/engraved/raised/etc.]
+
+PRESERVE (if editing):
+- [locked element]
+- [locked element]
+
+CHANGE ONLY:
+- [specific change]
+
+QUALITY BAR:
+Physically plausible, realistic shadows, accurate scale,
+no generic AI gloss.</pre>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 18 — 10 PRACTICE PROMPTS ======================= -->
+      <section class="section" id="s18">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1455390582262-044cdead277a?w=820&q=80&auto=format&fit=crop" alt="Writing practice prompts notebook pen">
+        </div>
+        <div class="section-header">
+          <div class="section-num">18</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">Copy. Paste. Run.</div>
+            <h2 class="section-title">✨ 10 practice prompts</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">TL;DR</div>
+          <div class="callout-body">Try these in order. Each one practices a different skill from this bible.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>1 · Platinum crystal logo hero</span><button class="copy-btn" data-copy='Create a photorealistic luxury product hero shot of a four-point diamond PLATINUM AI logo carved from translucent platinum crystal. Centered on matte black onyx, sharp beveled facets, cloudy internal mineral veining, tiny micro-fractures, realistic caustics, large softbox reflection, thin rim light, 85mm macro lens, no glow, no neon, no text.'>Copy</button></div>
+          <div class="prompt-body">Create a photorealistic luxury product hero shot of a four-point diamond PLATINUM AI logo carved from translucent platinum crystal. Centered on matte black onyx, sharp beveled facets, cloudy internal mineral veining, tiny micro-fractures, realistic caustics, large softbox reflection, thin rim light, 85mm macro lens, no glow, no neon, no text.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>2 · Engraved brand plaque</span><button class="copy-btn" data-copy='A matte black aerospace-grade metal plaque with "PLATINUM AI" deeply CNC-engraved into the surface. Recessed V-cut grooves, beveled inner walls, satin platinum highlights inside letters, dust settled in cuts, raking side light, macro luxury product photography.'>Copy</button></div>
+          <div class="prompt-body">A matte black aerospace-grade metal plaque with "PLATINUM AI" deeply CNC-engraved into the surface. Recessed V-cut grooves, beveled inner walls, satin platinum highlights inside letters, dust settled in cuts, raking side light, macro luxury product photography.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>3 · Realistic skin lettering</span><button class="copy-btn" data-copy='Photorealistic macro close-up of the word "PLATINUM" as raised chrome letters embedded into human skin. Real pores, fine hairs, subtle redness and pressure marks around each letter, chrome reflections following skin curvature, soft medical studio light, no plastic skin.'>Copy</button></div>
+          <div class="prompt-body">Photorealistic macro close-up of the word "PLATINUM" as raised chrome letters embedded into human skin. Real pores, fine hairs, subtle redness and pressure marks around each letter, chrome reflections following skin curvature, soft medical studio light, no plastic skin.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>4 · Robot head concept</span><button class="copy-btn" data-copy="Photorealistic robotic entity portrait. The head is a full human-scale four-point diamond crystal skull, semi-transparent platinum mineral, no face, no eyes, no visor. Inside are optical sensors, mechanical brain architecture, and a cold white-blue processing core. Matte black humanoid body, black void background, hard key light upper left.">Copy</button></div>
+          <div class="prompt-body">Photorealistic robotic entity portrait. The head is a full human-scale four-point diamond crystal skull, semi-transparent platinum mineral, no face, no eyes, no visor. Inside are optical sensors, mechanical brain architecture, and a cold white-blue processing core. Matte black humanoid body, black void background, hard key light upper left.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>5 · Product packaging</span><button class="copy-btn" data-copy='Premium AI hardware packaging for "PLATINUM AI." Matte black box, satin platinum embossed logo, sharp geometric diamond mark, clean futuristic sans-serif typography, soft studio lighting, realistic paper texture, subtle dust, luxury unboxing photography.'>Copy</button></div>
+          <div class="prompt-body">Premium AI hardware packaging for "PLATINUM AI." Matte black box, satin platinum embossed logo, sharp geometric diamond mark, clean futuristic sans-serif typography, soft studio lighting, realistic paper texture, subtle dust, luxury unboxing photography.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>6 · Cinematic editorial human</span><button class="copy-btn" data-copy="Photorealistic editorial portrait of an AI creative director in a dark studio. 50mm lens, eye-level framing, soft window light, natural skin pores, realistic eyebrow hairs, slight asymmetry, calm confident expression, matte black wardrobe, premium technology magazine mood.">Copy</button></div>
+          <div class="prompt-body">Photorealistic editorial portrait of an AI creative director in a dark studio. 50mm lens, eye-level framing, soft window light, natural skin pores, realistic eyebrow hairs, slight asymmetry, calm confident expression, matte black wardrobe, premium technology magazine mood.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>7 · Architecture lobby</span><button class="copy-btn" data-copy="Ultra-realistic architectural photograph of the PLATINUM AI headquarters lobby. Black stone, brushed platinum accents, translucent crystal logo behind reception desk, 24mm tilt-shift lens, straight verticals, soft skylight, realistic scale, quiet luxury technology atmosphere.">Copy</button></div>
+          <div class="prompt-body">Ultra-realistic architectural photograph of the PLATINUM AI headquarters lobby. Black stone, brushed platinum accents, translucent crystal logo behind reception desk, 24mm tilt-shift lens, straight verticals, soft skylight, realistic scale, quiet luxury technology atmosphere.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>8 · Website banner</span><button class="copy-btn" data-copy="16:9 cinematic website hero banner. Left side: four-point platinum crystal AI logo hovering above a black reflective surface. Right side: clean empty negative space for headline text. Dark Earth-from-orbit atmosphere, subtle geometric constellation lines, cold premium lighting, no text.">Copy</button></div>
+          <div class="prompt-body">16:9 cinematic website hero banner. Left side: four-point platinum crystal AI logo hovering above a black reflective surface. Right side: clean empty negative space for headline text. Dark Earth-from-orbit atmosphere, subtle geometric constellation lines, cold premium lighting, no text.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>9 · Typography poster</span><button class="copy-btn" data-copy='Create a premium black poster with exact text "PLATINUM AI" centered. Render once only, no extra text. Typography: extended futuristic geometric sans-serif, monoline strokes, squared bowls, flat-top A, angular R leg, wide tracking. Satin platinum ink on matte black.'>Copy</button></div>
+          <div class="prompt-body">Create a premium black poster with exact text "PLATINUM AI" centered. Render once only, no extra text. Typography: extended futuristic geometric sans-serif, monoline strokes, squared bowls, flat-top A, angular R leg, wide tracking. Satin platinum ink on matte black.</div>
+        </div>
+
+        <div class="prompt">
+          <div class="prompt-label"><span>10 · Multi-image edit protocol</span><button class="copy-btn" data-copy="Use Image 1 as the exact logo shape reference. Use Image 2 only as the material reference. Convert the logo from Image 1 into the translucent platinum crystal material from Image 2. Preserve the logo's exact silhouette, proportions, angles, and negative spaces. Do not add glow, rings, text, or extra facets.">Copy</button></div>
+          <div class="prompt-body">Use Image 1 as the exact logo shape reference. Use Image 2 only as the material reference. Convert the logo from Image 1 into the translucent platinum crystal material from Image 2. Preserve the logo's exact silhouette, proportions, angles, and negative spaces. Do not add glow, rings, text, or extra facets.</div>
+        </div>
+      </section>
+
+      <!-- ======================= SECTION 19 — CUSTOM INSTRUCTIONS ======================= -->
+      <section class="section" id="s19">
+        <div class="section-banner">
+          <img src="https://images.unsplash.com/photo-1611532736597-de2d4265fba3?w=820&q=80&auto=format&fit=crop" alt="Custom settings code configuration">
+        </div>
+        <div class="section-header">
+          <div class="section-num">19</div>
+          <div class="section-title-wrap">
+            <div class="section-eyebrow">★ Permanent setup · Do this once</div>
+            <h2 class="section-title">⚡ Custom Instructions</h2>
+          </div>
+        </div>
+
+        <div class="callout callout-tldr">
+          <div class="callout-label">★ How to use</div>
+          <div class="callout-body">
+            1. ChatGPT → Settings → <strong>Personalization → Custom Instructions</strong><br>
+            2. Paste the block below into the "How would you like ChatGPT to respond?" field<br>
+            3. Save<br>
+            4. Every future chat uses this framework automatically<br><br>
+            <strong>Then you can say:</strong> <em>"product shot of my crystal logo"</em> <strong>and ChatGPT expands it into a senior-level brief automatically.</strong>
+          </div>
+        </div>
+
+        <div class="codeblock">
+          <div class="codeblock-header">
+            <span class="codeblock-label">Custom Instructions v2 · Paste this</span>
+            <button class="copy-btn" data-copy='For every image request, operate as a senior art director (Vogue/WIRED/Apple/Patek Philippe level). Expand my simple briefs into world-class production briefs using this structure:
+
+1. Aspect ratio + shot type
+2. Subject (humans = age+ethnicity+hair+feature+clothing, keep tuple identical across images)
+3. Pose + expression
+4. Environment (foreground/midground/background)
+5. Lighting: key+fill+rim with direction, Kelvin (2700K-10000K), specific colors
+6. Camera: body (Hasselblad H6D/Phase One/ARRI/Leica), lens (35/50/85/100mm), aperture
+7. Composition: framing, leading lines, negative space
+8. Style: cinematic/editorial/documentary/luxury
+9. Color palette: 3-5 specific colors
+10. Mood + atmosphere
+11. Texture detail: SSS, pores, individual hairs, PBR materials, weave
+12. Quality modifiers: editorial, photoreal, natural asymmetry, slight film grain, imperfections
+13. Lock list when iterating
+
+NEVER: vague words (beautiful/stunning/nice), "no X" negative phrasing, multiple changes per iteration.
+
+ALWAYS: specific Kelvin temps, named camera bodies/lenses, positive framing for exclusions, one change at a time with full preserve list, exact text in quotes.
+
+For HUMANS: subsurface scattering, individual eyebrow hairs, catchlights, natural asymmetry, pore detail, peach fuzz — kill the plastic AI look.
+
+For MATERIALS: glass=refraction+caustics+inclusions, crystal=internal facet geometry+mineral veining, metal=anisotropic reflection+micro-scratches, fabric=visible weave+drape.
+
+For 3D/ROBOTS: Octane/Blender Cycles/Redshift, PBR, ray-traced reflections, hard surface modeling, panel lines, functional engineering not magic glow.
+
+For PRODUCTS: Hasselblad H6D, 100mm macro, f/8, studio sweep, hero shot, softbox reflection, contact shadow.
+
+For LUXURY: restrained, quiet, minimal effects, controlled reflections, negative space, micro-imperfections add realism (dust, hairline scratches, fingerprints).
+
+For TEXT IN IMAGES: exact text in quotes, render once only, no extra characters, specify font anatomy (squared bowls/flat-top A/extended tracking).
+
+PlatinumAI brand defaults:
+- Background: matte onyx #191A1F
+- Logo: four-point diamond crystal, faceted
+- Palette: platinum silver + matte black + cold accent
+- Mood: geometric intelligence, quiet luxury
+- Avoid: neon cyberpunk, glowing eyes, magic effects
+
+Execute this framework on every image prompt. No exceptions.'>Copy all</button>
+          </div>
+          <pre>For every image request, operate as a senior art director
+(Vogue/WIRED/Apple/Patek Philippe level). Expand my simple
+briefs into world-class production briefs using this structure:
+
+1. Aspect ratio + shot type
+2. Subject (humans = age+ethnicity+hair+feature+clothing,
+   keep tuple identical across images)
+3. Pose + expression
+4. Environment (foreground/midground/background)
+5. Lighting: key+fill+rim with direction, Kelvin
+   (2700K-10000K), specific colors
+6. Camera: body (Hasselblad H6D/Phase One/ARRI/Leica),
+   lens (35/50/85/100mm), aperture
+7. Composition: framing, leading lines, negative space
+8. Style: cinematic/editorial/documentary/luxury
+9. Color palette: 3-5 specific colors
+10. Mood + atmosphere
+11. Texture detail: SSS, pores, individual hairs, PBR
+    materials, weave
+12. Quality modifiers: editorial, photoreal, natural
+    asymmetry, slight film grain, imperfections
+13. Lock list when iterating
+
+NEVER: vague words (beautiful/stunning/nice), "no X"
+negative phrasing, multiple changes per iteration.
+
+ALWAYS: specific Kelvin temps, named camera bodies/lenses,
+positive framing for exclusions, one change at a time with
+full preserve list, exact text in quotes.
+
+For HUMANS: subsurface scattering, individual eyebrow hairs,
+catchlights, natural asymmetry, pore detail, peach fuzz —
+kill the plastic AI look.
+
+For MATERIALS: glass=refraction+caustics+inclusions,
+crystal=internal facet geometry+mineral veining,
+metal=anisotropic reflection+micro-scratches,
+fabric=visible weave+drape.
+
+For 3D/ROBOTS: Octane/Blender Cycles/Redshift, PBR,
+ray-traced reflections, hard surface modeling, panel lines,
+functional engineering not magic glow.
+
+For PRODUCTS: Hasselblad H6D, 100mm macro, f/8, studio
+sweep, hero shot, softbox reflection, contact shadow.
+
+For LUXURY: restrained, quiet, minimal effects, controlled
+reflections, negative space, micro-imperfections add
+realism (dust, hairline scratches, fingerprints).
+
+For TEXT IN IMAGES: exact text in quotes, render once only,
+no extra characters, specify font anatomy (squared bowls/
+flat-top A/extended tracking).
+
+PlatinumAI brand defaults:
+- Background: matte onyx #191A1F
+- Logo: four-point diamond crystal, faceted
+- Palette: platinum silver + matte black + cold accent
+- Mood: geometric intelligence, quiet luxury
+- Avoid: neon cyberpunk, glowing eyes, magic effects
+
+Execute this framework on every image prompt.
+No exceptions.</pre>
+        </div>
+
+        <div class="callout callout-tip">
+          <div class="callout-label">▲ Character limit reality</div>
+          <div class="callout-body">ChatGPT's Custom Instructions field is ~1500 chars per field. If the full block exceeds the limit, split it: <strong>Part 1 (framework + rules)</strong> into the "How to respond" field, <strong>Part 2 (subject-specific rules + PlatinumAI brand)</strong> into the "About you" field. Both combined = 3000 chars.</div>
+        </div>
+      </section>
+
+      <!-- ======================= CLOSING ======================= -->
+      <div class="bigquote" style="margin-top: 120px;">
+        <p class="bigquote-text">Your prompts should stop sounding like a wish list. They should sound like <em>a production brief.</em></p>
+      </div>
+
+      <div style="text-align: center; padding: 40px 0 20px; color: var(--mercury); font-family: var(--font-display); font-size: 11px; letter-spacing: 0.25em; text-transform: uppercase;">
+        PlatinumAI · The Geometric Intelligence<br>
+        <span style="font-size: 9px; letter-spacing: 0.18em; color: var(--steel); margin-top: 12px; display: inline-block;">Precision by design · Intelligence by nature</span>
+      </div>
+
+    </div>
+  </main>
+</div>
+
+<!-- Back to top button -->
+<button class="back-top" id="backTop" aria-label="Back to top">
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="18 15 12 9 6 15"></polyline></svg>
+</button>
+
+<script>
+// ============ COPY BUTTONS ============
+document.querySelectorAll('.copy-btn').forEach(btn => {
+  btn.addEventListener('click', async (e) => {
+    const text = btn.getAttribute('data-copy');
+    try {
+      await navigator.clipboard.writeText(text);
+      const originalText = btn.innerHTML;
+      btn.classList.add('copied');
+      btn.innerHTML = '<svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>Copied';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = originalText;
+      }, 1600);
+    } catch (err) {
+      // Fallback for older browsers
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      ta.remove();
+      btn.classList.add('copied');
+      btn.innerHTML = 'Copied';
+      setTimeout(() => {
+        btn.classList.remove('copied');
+        btn.innerHTML = 'Copy';
+      }, 1600);
+    }
+  });
+});
+
+// ============ SCROLL SPY (active sidebar link) ============
+const sections = document.querySelectorAll('section[id], div#hero');
+const navLinks = document.querySelectorAll('.sb-link');
+
+function updateActiveLink() {
+  const scrollPos = window.scrollY + 120;
+  let currentSection = 'hero';
+
+  sections.forEach(sec => {
+    if (sec.offsetTop <= scrollPos) {
+      currentSection = sec.id;
+    }
+  });
+
+  navLinks.forEach(link => {
+    link.classList.toggle('active', link.getAttribute('href') === '#' + currentSection);
+  });
+}
+
+// ============ SCROLL PROGRESS BAR ============
+const progressBar = document.getElementById('progressBar');
+const backTop = document.getElementById('backTop');
+
+function updateProgress() {
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const scrolled = (window.scrollY / docHeight) * 100;
+  progressBar.style.width = scrolled + '%';
+
+  if (window.scrollY > 400) {
+    backTop.classList.add('visible');
+  } else {
+    backTop.classList.remove('visible');
+  }
+}
+
+window.addEventListener('scroll', () => {
+  updateActiveLink();
+  updateProgress();
+}, { passive: true });
+
+// ============ BACK TO TOP ============
+backTop.addEventListener('click', () => {
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+// ============ SEARCH FILTER ============
+const searchInput = document.getElementById('search');
+const noResults = document.getElementById('noResults');
+
+searchInput.addEventListener('input', (e) => {
+  const query = e.target.value.toLowerCase().trim();
+  let visibleCount = 0;
+
+  navLinks.forEach(link => {
+    const text = link.textContent.toLowerCase();
+    if (query === '' || text.includes(query)) {
+      link.classList.remove('hidden');
+      visibleCount++;
+    } else {
+      link.classList.add('hidden');
+    }
+  });
+
+  // Hide section labels if no links visible in that group
+  document.querySelectorAll('.sb-section-label').forEach(label => {
+    let next = label.nextElementSibling;
+    let groupVisible = false;
+    while (next && !next.classList.contains('sb-section-label')) {
+      if (next.classList.contains('sb-link') && !next.classList.contains('hidden')) {
+        groupVisible = true;
+        break;
+      }
+      next = next.nextElementSibling;
+    }
+    label.style.display = (query === '' || groupVisible) ? '' : 'none';
+  });
+
+  noResults.classList.toggle('visible', visibleCount === 0 && query !== '');
+});
+
+// ============ KEYBOARD SHORTCUT (/ to focus search) ============
+document.addEventListener('keydown', (e) => {
+  if (e.key === '/' && document.activeElement.tagName !== 'INPUT') {
+    e.preventDefault();
+    searchInput.focus();
+  }
+  if (e.key === 'Escape' && document.activeElement === searchInput) {
+    searchInput.value = '';
+    searchInput.dispatchEvent(new Event('input'));
+    searchInput.blur();
+  }
+});
+
+// ============ MOBILE SIDEBAR ============
+const sidebar = document.getElementById('sidebar');
+const mobileToggle = document.getElementById('mobileToggle');
+
+mobileToggle.addEventListener('click', () => {
+  sidebar.classList.toggle('open');
+});
+
+// Close sidebar on link click (mobile)
+navLinks.forEach(link => {
+  link.addEventListener('click', () => {
+    if (window.innerWidth <= 900) {
+      sidebar.classList.remove('open');
+    }
+  });
+});
+
+// ============ INITIAL CALL ============
+updateActiveLink();
+updateProgress();
+</script>
+
+</body>
+</html>
